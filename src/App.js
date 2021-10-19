@@ -10,18 +10,20 @@ import { Header } from "./components/Header";
 
 function App() {
   // const { token } = useSelector((state) => state.filemaker);
+  const form = useSelector((state) => state.form);
   const dispatch = useDispatch();
   const queryParams = new URLSearchParams(window.location.search);
-
-  useEffect(() => {
+ 
+  useEffect(() => {    
     (async () => {
       //Get Filemaker Session Token
       const res = await getToken();
       //Save token to store
       dispatch(setToken(res));
       const result = await findRecord(queryParams.get("groupNumber"), res);
-      dispatch(setForm(result.data[0].fieldData));
-      console.log(result.data[0].fieldData);
+      dispatch(setForm(JSON.parse(JSON.stringify(result.data[0].fieldData).replaceAll(/(::)|[(]|[)]/g,"_"))));
+      // console.log(JSON.stringify(result.data[0].fieldData))
+      // console.log(JSON.stringify(result.data[0].fieldData).replaceAll(/(::)|[(]|[)]/g,"_"));
     })();
   }, []);
   return (
@@ -29,6 +31,7 @@ function App() {
       <Header />
       {/* <h1>{token}</h1>
       <Button>Hellow</Button> */}
+      <p>{JSON.stringify(form)}</p>
     </div>
   );
 }
