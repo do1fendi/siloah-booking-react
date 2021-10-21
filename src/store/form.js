@@ -10,6 +10,9 @@ const initialState = {
     kid: 0,
     infant: 0,
   },
+  registrar: {
+    country:"Taiwan"
+  },
   traveler: [],
 };
 
@@ -35,11 +38,30 @@ export const formSlice = createSlice({
       state.price.kid = TOURPACKAGE_SALSEPRICE_D_StandardPrice_2_;
       state.price.infant = TOURPACKAGE_SALSEPRICE_D_StandardPrice_3_;
     },
+    setRegistrar: (state, action) => {
+      const { input, value } = action.payload;
+      switch (input) {
+        case "fn":
+          state.registrar = { ...state.registrar, firstName: value };
+          break;
+        case "ln":
+          state.registrar = { ...state.registrar, lastName: value };
+          break;
+        case "email":
+          state.registrar = { ...state.registrar, email: value };
+          break;
+        case "country":
+          state.registrar = { ...state.registrar, country: value };
+          break;
+        default:
+          break;
+      }
+    },
     setTraveler: (state, action) => {
-      state.traveler.push(action);
+      state.traveler.push(action.payload);
     },
   },
 });
 
-export const { setForm } = formSlice.actions;
+export const { setForm, setRegistrar } = formSlice.actions;
 export default formSlice.reducer;
