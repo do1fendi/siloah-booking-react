@@ -121,7 +121,7 @@ export const Registrar = () => {
           </button>
         </div>
       </form>
-      <h1>{JSON.stringify(storeRegistrar)}</h1>
+      <h3>{JSON.stringify(storeRegistrar)}</h3>
     </div>
   );
 };

@@ -11,7 +11,8 @@ const initialState = {
     infant: 0,
   },
   registrar: {
-    country:"Taiwan"
+    country:"Taiwan",
+    phoneCode: "+886"
   },
   traveler: [],
 };
