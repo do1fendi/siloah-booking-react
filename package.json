@@ -2,6 +2,7 @@
   "name": "siloah-booking-react",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://localhost/build/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.14.1",
@@ -11,6 +12,7 @@
     "bootstrap": "^5.1.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-rc.1",
+    "react-bootstrap-icons": "^1.5.0",
     "react-datepicker": "^4.2.1",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.5",

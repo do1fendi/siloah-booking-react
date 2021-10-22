@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { country } from "../store/country";
 import { useEffect } from "react";
 export const Registrar = () => {
-  const storeRegistrar = useSelector((state) => state.form.registrar);
+  const storeRegistrar = useSelector((state) => state.form.form.registrar);
   const dispatch = useDispatch();
   const onChangeInput = (input, e) => {
     dispatch(setRegistrar({ input: input, value: e }));
@@ -40,59 +40,37 @@ export const Registrar = () => {
   return (
     <div>
       <form className="row g-3 needs-validation" noValidate>
-        {/* <div className="">
-          <label className="form-label">Name</label>
-          <input
-            type="text"
-            className="form-control form-control-sm"
-            id="registrarName"
-            placeholder="Name"
-            required
-            onChange={(e) => onChangeInput("name", e.target.value)}
-          />
-          <div class="valid-feedback">Looks good!</div>
-          <label className="form-label">Age</label>
-          <input
-            type="Number"
-            className="form-control form-control-sm"
-            id="registrarAge"
-            placeholder="Age"
-            onChange={(e) => onChangeInput("age", e.target.value)}
-          />
-        </div> */}
-        <div className="col-md-6">
-          <label htmlFor="validationCustom01" className="form-label">
-            First name
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="validationCustom01"
-            onChange={(e) => onChangeInput("fn", e.target.value)}
-            required
-          />
-          <div className="valid-feedback">Looks good!</div>
-        </div>
         <div className="col-md-6">
           <label htmlFor="validationCustom02" className="form-label">
-            Last name
+            姓氏/ Last name
           </label>
           <input
             type="text"
-            className="form-control"
+            className="form-control shadow-sm"
             id="validationCustom02"
             onChange={(e) => onChangeInput("ln", e.target.value)}
             required
           />
-          <div className="valid-feedback">Looks good!</div>
         </div>
         <div className="col-md-6">
+          <label htmlFor="validationCustom01" className="form-label">
+            名字/ First name
+          </label>
+          <input
+            type="text"
+            className="form-control shadow-sm"
+            id="validationCustom01"
+            onChange={(e) => onChangeInput("fn", e.target.value)}
+            required
+          />
+        </div>
+        <div className="col-md-12">
           <label htmlFor="validationCustom02" className="form-label">
             Email
           </label>
           <input
             type="email"
-            className="form-control"
+            className="form-control shadow-sm"
             id="validationCustom02"
             onChange={(e) => onChangeInput("email", e.target.value)}
             required
@@ -101,10 +79,10 @@ export const Registrar = () => {
         </div>
         <div className="col-md-6">
           <label htmlFor="validationCustom04" className="form-label">
-            Country
+            國家/ Country
           </label>
           <select
-            className="form-select"
+            className="form-select shadow-sm"
             id="validationCustom04"
             defaultValue="Taiwan"
             onChange={(e) => onChangeInput("country", e.target.value)}
@@ -119,27 +97,31 @@ export const Registrar = () => {
             })}
           </select>
         </div>
-        <div className="input-group mb-12">
-          <span className="input-group-text" id="basic-addon1">
-            {storeRegistrar.phoneCode}
-          </span>
-          <input
-            type="number"
-            className="form-control"
-            placeholder="phoneNumber"
-            aria-label="phoneNumber"
-            aria-describedby="basic-addon1"
-            onChange={(e) => onChangeInput("mobile", e.target.value)}
-            required
-          />
-        </div>
         <div className="col-md-6">
+          <label htmlFor="validationCustom04" className="form-label">
+          聯絡電話/ Contact Number
+          </label>
+          <div className="input-group">
+            <span className="input-group-text" id="basic-addon1">
+              {storeRegistrar.phoneCode}
+            </span>
+            <input
+              type="number"
+              className="form-control shadow-sm"
+              aria-label="phoneNumber"
+              aria-describedby="basic-addon1"
+              onChange={(e) => onChangeInput("mobile", e.target.value)}
+              required
+            />
+          </div>
+        </div>
+        <div className="col-md-12">
           <label htmlFor="validationCustom02" className="form-label">
-            Address
+            地址/ Address
           </label>
           <input
             type="text"
-            className="form-control"
+            className="form-control shadow-sm"
             id="validationCustom02"
             onChange={(e) => onChangeInput("address", e.target.value)}
             required

@@ -7,14 +7,14 @@ export const Header = () => {
   const [variant, setVariant] = useState("bg-success");
   // console.log(ageCalculate("11/15/2019", departureDate));
   return (
-    <div className="w-100 p-3">
+    <div className="w-100 p-2">
       <div className="alert alert-primary" role="alert">
         <div className="row">
           <div className="col col-xs-12 col-xs-6">{departureDate}</div>
           <div className="col col-xs-12 col-sm-6 text-end">
             Available Seat:
             <span
-              className={`badge rounded-pill px-2 mx-2 ${
+              className={`badge rounded-circle mx-2 ${
                 availableSeat == 0
                   ? "bg-danger"
                   : availableSeat < 6

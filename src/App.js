@@ -8,6 +8,7 @@ import { findRecord, getToken, setToken } from "./store/filemaker";
 import { setForm } from "./store/form";
 import { Header } from "./components/Header";
 import { Content } from "./components/Content";
+import { Agreement } from "./components/Agreement";
 
 function App() {
   // const { token } = useSelector((state) => state.filemaker);
@@ -51,7 +52,7 @@ function App() {
       )}
       <Header />
       <Content />
-
+      <Agreement />
       {/* <p>{JSON.stringify(form)}</p> */}
     </div>
   );

@@ -10,11 +10,13 @@ const initialState = {
     kid: 0,
     infant: 0,
   },
-  registrar: {
-    country:"Taiwan",
-    phoneCode: "+886"
+  form: {
+    registrar: {
+      country: "Taiwan",
+      phoneCode: "+886",
+    },
+    traveler: [],
   },
-  traveler: [],
 };
 
 export const formSlice = createSlice({
@@ -43,25 +45,25 @@ export const formSlice = createSlice({
       const { input, value } = action.payload;
       switch (input) {
         case "fn":
-          state.registrar = { ...state.registrar, firstName: value };
+          state.form.registrar = { ...state.form.registrar, firstName: value };
           break;
         case "ln":
-          state.registrar = { ...state.registrar, lastName: value };
+          state.form.registrar = { ...state.form.registrar, lastName: value };
           break;
         case "email":
-          state.registrar = { ...state.registrar, email: value };
+          state.form.registrar = { ...state.form.registrar, email: value };
           break;
         case "country":
-          state.registrar = { ...state.registrar, country: value };
+          state.form.registrar = { ...state.form.registrar, country: value };
           break;
         case "phoneCode":
-          state.registrar = { ...state.registrar, phoneCode: value };
+          state.form.registrar = { ...state.form.registrar, phoneCode: value };
           break;
         case "mobile":
-          state.registrar = { ...state.registrar, mobile: value };
+          state.form.registrar = { ...state.form.registrar, mobile: value };
           break;
         case "address":
-          state.registrar = { ...state.registrar, address: value };
+          state.form.registrar = { ...state.form.registrar, address: value };
           break;
         default:
           break;
