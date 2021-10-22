@@ -7,6 +7,11 @@ export const Registrar = () => {
   const dispatch = useDispatch();
   const onChangeInput = (input, e) => {
     dispatch(setRegistrar({ input: input, value: e }));
+    if (input === "country") {
+      const tempCountry = country.filter((state) => state.country === e);
+      const phoneCode = tempCountry[0].phoneCode;
+      dispatch(setRegistrar({ input: "phoneCode", value: phoneCode }));
+    }
   };
   // Example starter JavaScript for disabling form submissions if there are invalid fields
   (function () {
@@ -113,7 +118,32 @@ export const Registrar = () => {
               );
             })}
           </select>
-          <div class="invalid-feedback">Please select a valid state.</div>
+        </div>
+        <div className="input-group mb-12">
+          <span className="input-group-text" id="basic-addon1">
+            {storeRegistrar.phoneCode}
+          </span>
+          <input
+            type="number"
+            className="form-control"
+            placeholder="phoneNumber"
+            aria-label="phoneNumber"
+            aria-describedby="basic-addon1"
+            onChange={(e) => onChangeInput("mobile", e.target.value)}
+            required
+          />
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="validationCustom02" className="form-label">
+            Address
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="validationCustom02"
+            onChange={(e) => onChangeInput("address", e.target.value)}
+            required
+          />
         </div>
         <div className="col-12">
           <button className="btn btn-primary" type="submit">
@@ -121,7 +151,7 @@ export const Registrar = () => {
           </button>
         </div>
       </form>
-      <h3>{JSON.stringify(storeRegistrar)}</h3>
+      <p>{JSON.stringify(storeRegistrar)}</p>
     </div>
   );
 };

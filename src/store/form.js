@@ -54,6 +54,15 @@ export const formSlice = createSlice({
         case "country":
           state.registrar = { ...state.registrar, country: value };
           break;
+        case "phoneCode":
+          state.registrar = { ...state.registrar, phoneCode: value };
+          break;
+        case "mobile":
+          state.registrar = { ...state.registrar, mobile: value };
+          break;
+        case "address":
+          state.registrar = { ...state.registrar, address: value };
+          break;
         default:
           break;
       }
