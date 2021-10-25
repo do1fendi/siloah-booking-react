@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   groupNumber: "",
   departureDate: "",
-  availableSeat: "",
+  availableSeat: 0,
   tourSubject: "",
   price: {
     adult: 0,
@@ -70,10 +70,10 @@ export const formSlice = createSlice({
       }
     },
     setTraveler: (state, action) => {
-      state.traveler.push(action.payload);
+      state.form.traveler.push(action.payload);
     },
   },
 });
 
-export const { setForm, setRegistrar } = formSlice.actions;
+export const { setForm, setRegistrar, setTraveler } = formSlice.actions;
 export default formSlice.reducer;

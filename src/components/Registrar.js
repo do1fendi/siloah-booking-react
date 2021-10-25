@@ -1,10 +1,21 @@
 import { setRegistrar } from "../store/form";
 import { useDispatch, useSelector } from "react-redux";
 import { country } from "../store/country";
-import { useEffect } from "react";
-export const Registrar = () => {
-  const storeRegistrar = useSelector((state) => state.form.form.registrar);
+import {
+  forwardRef,
+  useState,
+  useRef,
+} from "react";
+import { Form } from "react-bootstrap";
+import { Traveler } from "./Traveler";
+
+function Registrar() {
+  const storeForm = useSelector((state) => state.form.form);
   const dispatch = useDispatch();
+  const [validated, setValidated] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
+  const childRef = useRef();
+
   const onChangeInput = (input, e) => {
     dispatch(setRegistrar({ input: input, value: e }));
     if (input === "country") {
@@ -13,33 +24,30 @@ export const Registrar = () => {
       dispatch(setRegistrar({ input: "phoneCode", value: phoneCode }));
     }
   };
-  // Example starter JavaScript for disabling form submissions if there are invalid fields
-  (function () {
-    "use strict";
 
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.querySelectorAll(".needs-validation");
+  const handleAddTraveler = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      event.preventDefault();
+      event.stopPropagation();
+      setIsOpen(true);      
+      childRef.current.callFromParent();
+    }
+    setValidated(true);
+  };
 
-    // Loop over them and prevent submission
-    Array.prototype.slice.call(forms).forEach(function (form) {
-      form.addEventListener(
-        "submit",
-        function (event) {
-          if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-
-          form.classList.add("was-validated");
-        },
-        false
-      );
-    });
-  })();
-  useEffect(() => {}, []);
   return (
-    <div>
-      <form className="row g-3 needs-validation" noValidate>
+    <div className="registrar">
+      <Form
+        className="row g-3 needs-validation"
+        id="registrarId"
+        noValidate
+        validated={validated}
+        onSubmit={handleAddTraveler}
+      >
         <div className="col-md-6">
           <label htmlFor="validationCustom02" className="form-label">
             姓氏/ Last name
@@ -99,11 +107,11 @@ export const Registrar = () => {
         </div>
         <div className="col-md-6">
           <label htmlFor="validationCustom04" className="form-label">
-          聯絡電話/ Contact Number
+            聯絡電話/ Contact Number
           </label>
           <div className="input-group">
             <span className="input-group-text" id="basic-addon1">
-              {storeRegistrar.phoneCode}
+              {storeForm.registrar.phoneCode}
             </span>
             <input
               type="number"
@@ -127,13 +135,16 @@ export const Registrar = () => {
             required
           />
         </div>
-        <div className="col-12">
+        <div className="d-flex justify-content-end">          
           <button className="btn btn-primary" type="submit">
-            Submit form
+            Add Traveler
           </button>
         </div>
-      </form>
-      <p>{JSON.stringify(storeRegistrar)}</p>
+        <Traveler ref={childRef} modal={isOpen} />
+      </Form>
+      {/* <p>{JSON.stringify(storeForm)}</p> */}
     </div>
   );
-};
+}
+
+export default forwardRef(Registrar);
