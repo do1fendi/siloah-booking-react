@@ -1,16 +1,13 @@
 import { setRegistrar } from "../store/form";
 import { useDispatch, useSelector } from "react-redux";
 import { country } from "../store/country";
-import {
-  forwardRef,
-  useState,
-  useRef,
-} from "react";
+import { forwardRef, useState, useRef } from "react";
 import { Form } from "react-bootstrap";
 import { Traveler } from "./Traveler";
 
 function Registrar() {
-  const storeForm = useSelector((state) => state.form.form);
+  const storeForm = useSelector((state) => state.form.form);  
+  const limit = useSelector((state)=>state.form.availableSeat)
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
@@ -33,7 +30,7 @@ function Registrar() {
     } else {
       event.preventDefault();
       event.stopPropagation();
-      setIsOpen(true);      
+      setIsOpen(true);
       childRef.current.callFromParent();
     }
     setValidated(true);
@@ -41,6 +38,7 @@ function Registrar() {
 
   return (
     <div className="registrar">
+      <h3 className="text-center mb-4 mt-3">訂購人</h3>
       <Form
         className="row g-3 needs-validation"
         id="registrarId"
@@ -135,7 +133,10 @@ function Registrar() {
             required
           />
         </div>
-        <div className="d-flex justify-content-end">          
+        <div className="d-flex justify-content-between mt-5">
+          <h3>
+            Travelers <span className="fs-6">limit（{limit}）</span>
+          </h3>
           <button className="btn btn-primary" type="submit">
             Add Traveler
           </button>

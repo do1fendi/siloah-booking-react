@@ -3,19 +3,42 @@ import { Button, Modal, Form } from "react-bootstrap";
 import { country } from "../store/country";
 import { useDispatch, useSelector } from "react-redux";
 import { setTraveler } from "../store/form";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const Traveler = forwardRef(({ modal }, ref) => {
   const storeForm = useSelector((state) => state.form);
+  const [startDate, setStartDate] = useState(undefined);
   const [travelerForm, setTravelerForm] = useState({
     ln: "",
     fn: "",
+    gender: "male",
     email: "",
     country: "Taiwan",
     phoneCode: "+886",
+    dob: "",
+    address: "",
   });
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
+  const range = (start, end, length = end - start + 1) =>
+    Array.from({ length }, (_, i) => start + i);
+  const years = range(1921, new Date().getFullYear() + 1);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
@@ -63,6 +86,9 @@ export const Traveler = forwardRef(({ modal }, ref) => {
       case "fn":
         setTravelerForm({ ...travelerForm, fn: e });
         break;
+      case "gender":
+        setTravelerForm({ ...travelerForm, gender: e });
+        break;
       case "email":
         setTravelerForm({ ...travelerForm, email: e });
         break;
@@ -71,6 +97,14 @@ export const Traveler = forwardRef(({ modal }, ref) => {
         break;
       case "mobile":
         setTravelerForm({ ...travelerForm, mobile: e });
+        break;
+      case "dob":
+        setStartDate(e);
+        const month = (e.getMonth()+1).toString().padStart(2, "0")
+        const year = e.getFullYear()
+        const day = e.getDate()
+        const combined = `${year}/${month}/${day}`
+        setTravelerForm({ ...travelerForm, dob: combined });
         break;
       case "address":
         setTravelerForm({ ...travelerForm, address: e });
@@ -97,8 +131,8 @@ export const Traveler = forwardRef(({ modal }, ref) => {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title>Modal title</Modal.Title>
-          <Button variant="outline-info">Set as Registrar</Button>
+          <Modal.Title>旅客</Modal.Title>
+          <Button variant="outline-info">與訂購人相同</Button>
         </Modal.Header>
         <Modal.Body>
           <>
@@ -108,7 +142,7 @@ export const Traveler = forwardRef(({ modal }, ref) => {
               validated={validated}
               onSubmit={handleTraveler}
             >
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label htmlFor="validationCustom02" className="form-label">
                   姓氏/ Last name
                 </label>
@@ -120,7 +154,7 @@ export const Traveler = forwardRef(({ modal }, ref) => {
                   required
                 />
               </div>
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label htmlFor="validationCustom01" className="form-label">
                   名字/ First name
                 </label>
@@ -132,18 +166,20 @@ export const Traveler = forwardRef(({ modal }, ref) => {
                   required
                 />
               </div>
-              <div className="col-md-12">
-                <label htmlFor="validationCustom02" className="form-label">
-                  Email
+              <div className="col-md-4">
+                <label htmlFor="validationCustom01" className="form-label">
+                  生別/ Gender
                 </label>
-                <input
-                  type="email"
-                  className="form-control shadow-sm"
-                  id="validationCustom02"
-                  onChange={(e) => onChangeInput("email", e.target.value)}
+                <select
+                  className="form-select shadow-sm"
+                  id="validationCustom04"
+                  defaultValue="male"
+                  onChange={(e) => onChangeInput("gender", e.target.value)}
                   required
-                />
-                <div className="invalid-feedback">Email wrong.</div>
+                >
+                  <option value="male">男</option>
+                  <option value="female">女</option>
+                </select>
               </div>
               <div className="col-md-6">
                 <label htmlFor="validationCustom04" className="form-label">
@@ -183,6 +219,93 @@ export const Traveler = forwardRef(({ modal }, ref) => {
                   />
                 </div>
               </div>
+              <div className="col-md-6">
+                <label htmlFor="validationCustom02" className="form-label">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="form-control shadow-sm"
+                  id="validationCustom02"
+                  onChange={(e) => onChangeInput("email", e.target.value)}
+                  required
+                />
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="validationCustom02" className="form-label">
+                  Date of Birth
+                </label>
+                <DatePicker
+                  className="form-control shadow-sm"
+                  renderCustomHeader={({
+                    date,
+                    changeYear,
+                    changeMonth,
+                    decreaseMonth,
+                    increaseMonth,
+                    prevMonthButtonDisabled,
+                    nextMonthButtonDisabled,
+                  }) => (
+                    <div
+                      style={{
+                        margin: 10,
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {/* <button
+                        onClick={decreaseMonth}
+                        disabled={prevMonthButtonDisabled}
+                      >
+                        {"<"}
+                      </button> */}
+                      <select
+                        value={date.getFullYear()}
+                        onChange={({ target: { value } }) => changeYear(value)}
+                        className="rounded" 
+                      >
+                        {years.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+
+                      <select
+                        value={months[date.getMonth()]}
+                        onChange={({ target: { value } }) =>
+                          changeMonth(months.indexOf(value))
+                        }
+                        className="rounded ms-2"
+                      >
+                        {months.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+
+                      {/* <button
+                        onClick={increaseMonth}
+                        disabled={nextMonthButtonDisabled}
+                      >
+                        {">"}
+                      </button> */}
+                    </div>
+                  )}
+                  dateFormat="yyyy/MM/dd"
+                  selected={startDate}
+                  required
+                  onChange={(e) => onChangeInput("dob", e)}
+                />
+                {/* <DatePicker
+                  className="form-control shadow-sm"
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  maxDate={new Date()}
+                /> */}
+              </div>
+
               <div className="col-md-12">
                 <label htmlFor="validationCustom02" className="form-label">
                   地址/ Address
@@ -200,10 +323,11 @@ export const Traveler = forwardRef(({ modal }, ref) => {
                   Cancel
                 </Button>
                 <Button variant="primary" type="submit">
-                  Submit
+                  Confirm
                 </Button>
               </div>
             </Form>
+            <p>{console.log(travelerForm)}</p>
           </>
         </Modal.Body>
         {/* <Modal.Footer>

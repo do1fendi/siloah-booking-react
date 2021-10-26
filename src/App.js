@@ -52,7 +52,7 @@ function App() {
       )}
       <Header />
       <Content />
-      <Agreement />      
+      <Agreement />  
       {/* <p>{JSON.stringify(form.form)}</p> */}
     </div>
   );
