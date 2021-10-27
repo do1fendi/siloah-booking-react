@@ -4,10 +4,17 @@ import { country } from "../store/country";
 import { forwardRef, useState, useRef } from "react";
 import { Form } from "react-bootstrap";
 import { Traveler } from "./Traveler";
+import { Room } from "./Room";
 
 function Registrar() {
-  const storeForm = useSelector((state) => state.form.form);  
-  const limit = useSelector((state)=>state.form.availableSeat)
+  const storeForm = useSelector((state) => state.form.form);
+  // const roomNumber = useSelector((state) =>
+  //   state.form.priceTable.reduce(
+  //     (prev, curr) => prev.TOURPACKAGE_GROUPPRICE_roomAvailable + curr.TOURPACKAGE_GROUPPRICE_roomAvailable
+  //   )
+  // );
+  const roomNumber = useSelector((state) => state.form.priceTable);
+  const limit = useSelector((state) => state.form.availableSeat);
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
@@ -22,7 +29,7 @@ function Registrar() {
     }
   };
 
-  const handleAddTraveler = (event) => {
+  const handleAddRoom = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -31,7 +38,7 @@ function Registrar() {
       event.preventDefault();
       event.stopPropagation();
       setIsOpen(true);
-      childRef.current.callFromParent();
+      // childRef.current.callFromParent();
     }
     setValidated(true);
   };
@@ -44,7 +51,7 @@ function Registrar() {
         id="registrarId"
         noValidate
         validated={validated}
-        onSubmit={handleAddTraveler}
+        onSubmit={handleAddRoom}
       >
         <div className="col-md-6">
           <label htmlFor="validationCustom02" className="form-label">
@@ -138,10 +145,11 @@ function Registrar() {
             Travelers <span className="fs-6">limit（{limit}）</span>
           </h3>
           <button className="btn btn-primary" type="submit">
-            Add Traveler
+            Add Room
           </button>
         </div>
-        <Traveler ref={childRef} modal={isOpen} />
+        {/* <Traveler ref={childRef} modal={isOpen} /> */}
+        {JSON.stringify(roomNumber)}
       </Form>
       {/* <p>{JSON.stringify(storeForm)}</p> */}
     </div>

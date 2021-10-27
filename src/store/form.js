@@ -5,6 +5,7 @@ const initialState = {
   departureDate: "",
   availableSeat: 0,
   tourSubject: "",
+  priceTable: [{ TOURPACKAGE_GROUPPRICE_roomAvailable: 0 }],
   price: {
     adult: 0,
     kid: 0,
@@ -16,6 +17,7 @@ const initialState = {
       phoneCode: "+886",
     },
     traveler: [],
+    rooms: [],
   },
 };
 
@@ -40,6 +42,10 @@ export const formSlice = createSlice({
       state.price.adult = TOURPACKAGE_SALSEPRICE_D_StandardPrice_1_;
       state.price.kid = TOURPACKAGE_SALSEPRICE_D_StandardPrice_2_;
       state.price.infant = TOURPACKAGE_SALSEPRICE_D_StandardPrice_3_;
+    },
+    setPriceTable: (state, action) => {
+      const { priceTable_group } = action.payload;
+      state.priceTable = priceTable_group;
     },
     setRegistrar: (state, action) => {
       const { input, value } = action.payload;
@@ -75,5 +81,6 @@ export const formSlice = createSlice({
   },
 });
 
-export const { setForm, setRegistrar, setTraveler } = formSlice.actions;
+export const { setForm, setRegistrar, setTraveler, setPriceTable } =
+  formSlice.actions;
 export default formSlice.reducer;

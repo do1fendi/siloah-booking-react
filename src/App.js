@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import { useEffect, useState } from "react";
 import { findRecord, getToken, setToken } from "./store/filemaker";
-import { setForm } from "./store/form";
+import { setForm, setPriceTable } from "./store/form";
 import { Header } from "./components/Header";
 import { Content } from "./components/Content";
 import { Agreement } from "./components/Agreement";
@@ -26,6 +26,7 @@ function App() {
       //Save token to store
       dispatch(setToken(res));
       const result = await findRecord(queryParams.get("groupNumber"), res);
+      // store fieldata from filemaker
       dispatch(
         setForm(
           JSON.parse(
@@ -36,8 +37,19 @@ function App() {
           )
         )
       );
+      // store portaldata from filemaker
+      dispatch(
+        setPriceTable(
+          JSON.parse(
+            JSON.stringify(result.data[0].portalData).replaceAll(
+              /(::)|[(]|[)]/g,
+              "_"
+            )
+          )
+        )
+      );
       setloading(false);
-      // console.log(JSON.stringify(result.data[0].fieldData))
+      // console.log(form)
       // console.log(JSON.stringify(result.data[0].fieldData).replaceAll(/(::)|[(]|[)]/g,"_"));
     })();
   }, []);
@@ -52,8 +64,8 @@ function App() {
       )}
       <Header />
       <Content />
-      <Agreement />  
-      {/* <p>{JSON.stringify(form.form)}</p> */}
+      <Agreement />
+      {/* <p>{JSON.stringify(form.priceTable)}</p> */}
     </div>
   );
 }
