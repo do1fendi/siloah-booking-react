@@ -8,6 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export const Traveler = forwardRef(({ modal }, ref) => {
   const storeForm = useSelector((state) => state.form);
+  const travelerNumber = useSelector((state) => state.form.form.traveler.length);
   const [startDate, setStartDate] = useState(undefined);
   const [travelerForm, setTravelerForm] = useState({
     ln: "",
@@ -100,10 +101,10 @@ export const Traveler = forwardRef(({ modal }, ref) => {
         break;
       case "dob":
         setStartDate(e);
-        const month = (e.getMonth()+1).toString().padStart(2, "0")
-        const year = e.getFullYear()
-        const day = e.getDate()
-        const combined = `${year}/${month}/${day}`
+        const month = (e.getMonth() + 1).toString().padStart(2, "0");
+        const year = e.getFullYear();
+        const day = e.getDate();
+        const combined = `${month}/${day}/${year}`;
         setTravelerForm({ ...travelerForm, dob: combined });
         break;
       case "address":
@@ -132,7 +133,7 @@ export const Traveler = forwardRef(({ modal }, ref) => {
       >
         <Modal.Header>
           <Modal.Title>旅客</Modal.Title>
-          <Button variant="outline-info">與訂購人相同</Button>
+          {travelerNumber < 1 ? <Button variant="outline-info">與訂購人相同</Button> :""}
         </Modal.Header>
         <Modal.Body>
           <>
@@ -262,7 +263,7 @@ export const Traveler = forwardRef(({ modal }, ref) => {
                       <select
                         value={date.getFullYear()}
                         onChange={({ target: { value } }) => changeYear(value)}
-                        className="rounded" 
+                        className="rounded"
                       >
                         {years.map((option) => (
                           <option key={option} value={option}>
@@ -293,7 +294,7 @@ export const Traveler = forwardRef(({ modal }, ref) => {
                       </button> */}
                     </div>
                   )}
-                  dateFormat="yyyy/MM/dd"
+                  dateFormat="MM/dd/yyyy"
                   selected={startDate}
                   required
                   onChange={(e) => onChangeInput("dob", e)}
@@ -327,7 +328,7 @@ export const Traveler = forwardRef(({ modal }, ref) => {
                 </Button>
               </div>
             </Form>
-            <p>{console.log(travelerForm)}</p>
+            
           </>
         </Modal.Body>
         {/* <Modal.Footer>
