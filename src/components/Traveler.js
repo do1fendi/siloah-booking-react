@@ -6,9 +6,11 @@ import { setTraveler } from "../store/form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export const Traveler = forwardRef(({ modal }, ref) => {
+export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
   const storeForm = useSelector((state) => state.form);
-  const travelerNumber = useSelector((state) => state.form.form.traveler.length);
+  const travelerNumber = useSelector(
+    (state) => state.form.form.traveler.length
+  );
   const [startDate, setStartDate] = useState(undefined);
   const [travelerForm, setTravelerForm] = useState({
     ln: "",
@@ -65,6 +67,7 @@ export const Traveler = forwardRef(({ modal }, ref) => {
     } else {
       event.preventDefault();
       event.stopPropagation();
+      travelerSet();
       dispatch(setTraveler(travelerForm));
       handleClose();
       console.log(storeForm.form);
@@ -118,6 +121,7 @@ export const Traveler = forwardRef(({ modal }, ref) => {
 
   return (
     <div className="traveler">
+      
       {/* <div className="d-flex justify-content-between">
         <h2>Traveler</h2>
         <Button variant="primary" onClick={handleShow}>
@@ -132,8 +136,12 @@ export const Traveler = forwardRef(({ modal }, ref) => {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title>旅客</Modal.Title>
-          {travelerNumber < 1 ? <Button variant="outline-info">與訂購人相同</Button> :""}
+          <Modal.Title>旅客 Room Index {indexNo}</Modal.Title>
+          {travelerNumber < 1 ? (
+            <Button variant="outline-info">與訂購人相同</Button>
+          ) : (
+            ""
+          )}
         </Modal.Header>
         <Modal.Body>
           <>
@@ -328,7 +336,6 @@ export const Traveler = forwardRef(({ modal }, ref) => {
                 </Button>
               </div>
             </Form>
-            
           </>
         </Modal.Body>
         {/* <Modal.Footer>

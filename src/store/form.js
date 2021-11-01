@@ -5,19 +5,23 @@ const initialState = {
   departureDate: "",
   availableSeat: 0,
   tourSubject: "",
-  priceTable: [{ TOURPACKAGE_GROUPPRICE_roomAvailable: 0 }],
+  priceTable: [
+    { TOURPACKAGE_GROUPPRICE_roomAvailable: 0 },
+    { TOURPACKAGE_GROUPPRICE_roomAvailable: 0 },
+  ],
   price: {
     adult: 0,
     kid: 0,
     infant: 0,
   },
+  roomOccupancyTable: [],
   form: {
     registrar: {
       country: "Taiwan",
       phoneCode: "+886",
     },
     traveler: [],
-    rooms: [],
+    room: [],
   },
 };
 
@@ -46,6 +50,55 @@ export const formSlice = createSlice({
     setPriceTable: (state, action) => {
       const { priceTable_group } = action.payload;
       state.priceTable = priceTable_group;
+      state.roomOccupancyTable = priceTable_group;
+    },
+    updateRoomTable: (state, action) => {
+      const { indexPrevious, index } = action.payload;
+      if (indexPrevious == null && index != null) {
+        state.roomOccupancyTable[index][
+          "TOURPACKAGE_GROUPPRICE_roomAvailable"
+        ] =
+          state.roomOccupancyTable[index][
+            "TOURPACKAGE_GROUPPRICE_roomAvailable"
+          ] - 1;
+      } else if (indexPrevious != null && index != null) {
+        state.roomOccupancyTable[indexPrevious][
+          "TOURPACKAGE_GROUPPRICE_roomAvailable"
+        ] =
+          state.roomOccupancyTable[indexPrevious][
+            "TOURPACKAGE_GROUPPRICE_roomAvailable"
+          ] + 1;
+
+        state.roomOccupancyTable[index][
+          "TOURPACKAGE_GROUPPRICE_roomAvailable"
+        ] =
+          state.roomOccupancyTable[index][
+            "TOURPACKAGE_GROUPPRICE_roomAvailable"
+          ] - 1;
+      } else {
+        state.roomOccupancyTable[indexPrevious][
+          "TOURPACKAGE_GROUPPRICE_roomAvailable"
+        ] =
+          state.roomOccupancyTable[indexPrevious][
+            "TOURPACKAGE_GROUPPRICE_roomAvailable"
+          ] + 1;
+      }
+
+      // if (indexPrevious != null) {
+      //   state.roomOccupancyTable[indexPrevious][
+      //     "TOURPACKAGE_GROUPPRICE_roomAvailable"
+      //   ] =
+      //     state.roomOccupancyTable[indexPrevious][
+      //       "TOURPACKAGE_GROUPPRICE_roomAvailable"
+      //     ] + 1;
+      // }
+      // state.roomOccupancyTable[index][
+      //   "TOURPACKAGE_GROUPPRICE_roomAvailable"
+      // ] =
+      //   state.roomOccupancyTable[index][
+      //     "TOURPACKAGE_GROUPPRICE_roomAvailable"
+      //   ] - 1;
+      // const index = state.roomOccupancyTable.findIndex((item)=>item.TOURPACKAGE_GROUPPRICE_roomTypeName == action.payload)
     },
     setRegistrar: (state, action) => {
       const { input, value } = action.payload;
@@ -78,9 +131,18 @@ export const formSlice = createSlice({
     setTraveler: (state, action) => {
       state.form.traveler.push(action.payload);
     },
+    setRoom: (state) => {
+      state.form.room.push({});
+    },
   },
 });
 
-export const { setForm, setRegistrar, setTraveler, setPriceTable } =
-  formSlice.actions;
+export const {
+  setForm,
+  setRegistrar,
+  setTraveler,
+  setPriceTable,
+  setRoom,
+  updateRoomTable,
+} = formSlice.actions;
 export default formSlice.reducer;

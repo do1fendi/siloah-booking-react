@@ -1,19 +1,21 @@
-import { setRegistrar } from "../store/form";
+import { setRegistrar, setRoom } from "../store/form";
 import { useDispatch, useSelector } from "react-redux";
 import { country } from "../store/country";
-import { forwardRef, useState, useRef } from "react";
+import { forwardRef, useState, useRef, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { Traveler } from "./Traveler";
-import { Room } from "./Room";
 
 function Registrar() {
   const storeForm = useSelector((state) => state.form.form);
-  // const roomNumber = useSelector((state) =>
-  //   state.form.priceTable.reduce(
-  //     (prev, curr) => prev.TOURPACKAGE_GROUPPRICE_roomAvailable + curr.TOURPACKAGE_GROUPPRICE_roomAvailable
-  //   )
-  // );
-  const roomNumber = useSelector((state) => state.form.priceTable);
+  const availableRoom = useSelector((state) => {
+    const currPriceTable = state.form.priceTable;
+    const x = currPriceTable.reduce(
+      (prev, curr) => prev + curr.TOURPACKAGE_GROUPPRICE_roomAvailable,
+      0
+    );
+    return x;
+  });
+  const [roomLeft, setRoomLeft] = useState(0);
   const limit = useSelector((state) => state.form.availableSeat);
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
@@ -37,11 +39,21 @@ function Registrar() {
     } else {
       event.preventDefault();
       event.stopPropagation();
+      // add room if any available room
+      if (roomLeft > 0) {        
+        setRoomLeft(roomLeft - 1);
+      } else {
+        alert("No more available room");
+      }
       setIsOpen(true);
       // childRef.current.callFromParent();
     }
     setValidated(true);
   };
+
+  useEffect(() => {
+    setRoomLeft(availableRoom);
+  }, [availableRoom]);
 
   return (
     <div className="registrar">
@@ -142,14 +154,15 @@ function Registrar() {
         </div>
         <div className="d-flex justify-content-between mt-5">
           <h3>
-            Travelers <span className="fs-6">limit（{limit}）</span>
+            Rooms <span className="fs-6">Left（{roomLeft}）</span>
           </h3>
           <button className="btn btn-primary" type="submit">
-            Add Room
+            Add Room 
+            {/* <span class="badge bg-danger">{roomLeft}</span> */}
           </button>
         </div>
         {/* <Traveler ref={childRef} modal={isOpen} /> */}
-        {JSON.stringify(roomNumber)}
+        {/* {roomLeft} */}
       </Form>
       {/* <p>{JSON.stringify(storeForm)}</p> */}
     </div>
