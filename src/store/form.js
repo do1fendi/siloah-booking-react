@@ -20,7 +20,6 @@ const initialState = {
       country: "Taiwan",
       phoneCode: "+886",
     },
-    traveler: [],
     room: [],
   },
 };
@@ -129,16 +128,31 @@ export const formSlice = createSlice({
       }
     },
     setTraveler: (state, action) => {
-      state.form.traveler.push(action.payload);
+      const { index, traveler } = action.payload;
+      if (!state.form.room[index].traveler) {
+        state.form.room[index].traveler = [];
+      }
+      state.form.room[index].traveler.push(traveler);
+      // state.form.traveler.push(action.payload);
+    },
+    clearTraveler:(state,action) => {
+      const {index} = action.payload
+      if(state.form.room[index].traveler) state.form.room[index].traveler = []
     },
     setRoom: (state) => {
       state.form.room.push({});
+    },
+    updateRoomForm: (state, action) => {
+      const { index, roomType } = action.payload;
+      state.form.room[index].roomType = roomType;
     },
   },
 });
 
 export const {
   setForm,
+  updateRoomForm,
+  clearTraveler,
   setRegistrar,
   setTraveler,
   setPriceTable,

@@ -53,12 +53,12 @@
   color: ivory;
   border: none;
 }
-.btn-primary:hover, .btn-primary:focus {
+.btn-primary:hover, .btn-primary:focus{
   background: #01c0b6;
   border: none;
 }
 
-.btn-outline-primary{
+.btn-outline-primary, .text-green {
   border-color: #009e96;
   color: #009e96;
 }

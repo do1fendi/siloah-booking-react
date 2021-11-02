@@ -1,8 +1,10 @@
 import { useState, useRef } from "react";
 import { Form, InputGroup } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { updateRoomTable, setRoom } from "../store/form";
+import { updateRoomTable, updateRoomForm, clearTraveler } from "../store/form";
 import { Traveler } from "./Traveler";
+import { TravelerTable } from "./TravelerTable";
+
 export const Room = ({ indexNo }) => {
   const [inputRoom, setInputRoom] = useState("");
   const [roomMaxOccupancy, setRoomMaxOccupancy] = useState(0);
@@ -48,25 +50,27 @@ export const Room = ({ indexNo }) => {
     //set max current max room occupancy
     const currRoomType = roomOccupancy.filter(
       (room) => room.TOURPACKAGE_GROUPPRICE_roomTypeName == ev
-    );    
+    );
     if (ev != "") {
       setRoomMaxOccupancy(
         currRoomType[0].TOURPACKAGE_GROUPPRICE_roomMaxOccupancy
       );
       // setRoom Store
-      dispatch(setRoom({index:indexNo, roomType:Event}));
+      dispatch(updateRoomForm({ index: indexNo, roomType: ev }));
     } else {
       setRoomMaxOccupancy(0);
     }
+
+    //Clear Traveler list room changed
+    dispatch(clearTraveler({ index: indexNo }));
   };
 
   const addTraveler = () => {
     if (inputRoom === "") {
       setInputStyle({ borderColor: "red" });
-    }else if(roomMaxOccupancy==0){
-      alert("Treveler limit reach")
-    }
-     else {
+    } else if (roomMaxOccupancy == 0) {
+      alert("Treveler limit reach");
+    } else {
       setInputStyle({ borderColor: "green" });
       setIsOpen(true);
       childRef.current.callFromParent();
@@ -78,8 +82,8 @@ export const Room = ({ indexNo }) => {
   };
 
   return (
-    <div className="p-2 mb-2 shadow-sm">
-      Room index {indexNo}
+    <div className="p-2 mb-2 shadow-lg mt-3 mb-3">
+      {/* Room index {indexNo} */}
       <Form>
         <InputGroup className="mb-2">
           <InputGroup.Text>Available Room</InputGroup.Text>
@@ -97,8 +101,9 @@ export const Room = ({ indexNo }) => {
           </Form.Select>
         </InputGroup>
       </Form>
+        <TravelerTable indexNo={indexNo} />
       <div className="d-flex justify-content-between">
-        <h3>Room: {inputRoom}</h3>
+        <h5 className="text-green fw-bold">Selected Room: {inputRoom}</h5>
         <button
           type="button"
           className="btn btn-primary btn-sm"
@@ -108,8 +113,12 @@ export const Room = ({ indexNo }) => {
           <span className="badge bg-danger">{roomMaxOccupancy}</span>
         </button>
       </div>
-      <Traveler ref={childRef} modal={isOpen} indexNo={indexNo} travelerSet={travelerSet} />
-      {/* {JSON.stringify(roomOccupancy)} */}
+      <Traveler
+        ref={childRef}
+        modal={isOpen}
+        indexNo={indexNo}
+        travelerSet={travelerSet}
+      />
     </div>
   );
 };

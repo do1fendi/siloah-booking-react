@@ -1,19 +1,18 @@
 import Registrar from "./Registrar";
-import { TravelerTable } from "./TravelerTable";
 import { Room } from "./Room";
 import { useSelector } from "react-redux";
 
 export const Content = () => {
   const rooms = useSelector((state) => state.form.form.room);
+  const form = useSelector((state) => state.form.form);
   return (
     <div className="container">
       <Registrar />
       {rooms.map((room, index) => (
         <Room key={index} indexNo={index} />
-      ))}
+      ))}      
       
-      {/* <TravelerTable /> */}
-      {/* <Traveler test={testing} /> */}
+      <p className="text-wrap text-break">{JSON.stringify(form)}</p>
     </div>
   );
 };

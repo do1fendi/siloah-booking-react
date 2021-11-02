@@ -5,29 +5,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTraveler } from "../store/form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { ageCalculate } from "../store/ageCalculate";
 
 export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
   const storeForm = useSelector((state) => state.form);
-  const travelerNumber = useSelector(
-    (state) => state.form.form.traveler.length
-  );
+  // const travelerNumber = useSelector(
+  //   (state) => state.form.form.traveler.length
+  // );
   const [startDate, setStartDate] = useState(undefined);
   const [travelerForm, setTravelerForm] = useState({
-    ln: "",
-    fn: "",
+    lastName: "",
+    firstName: "",
     gender: "male",
     email: "",
     country: "Taiwan",
     phoneCode: "+886",
     dob: "",
     address: "",
+    status: "",
   });
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [validated, setValidated] = useState(false);
   const range = (start, end, length = end - start + 1) =>
     Array.from({ length }, (_, i) => start + i);
-  const years = range(1921, new Date().getFullYear() + 1);
+  const years = range(1931, new Date().getFullYear() + 1);
   const months = [
     "January",
     "February",
@@ -46,9 +48,13 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
   const handleClose = () => setShow(false);
   const handleShow = () => {
     modal ? setShow(true) : setShow(false);
-    if (storeForm.form.traveler.length >= storeForm.availableSeat) {
-      alert("Limit seat exceeded");
-      setShow(false);
+    if (storeForm.form.room[indexNo].traveler) {
+      if (
+        storeForm.form.room[indexNo].traveler.length >= storeForm.availableSeat
+      ) {
+        alert("Limit seat exceeded");
+        setShow(false);
+      }
     }
   };
 
@@ -68,7 +74,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
       event.preventDefault();
       event.stopPropagation();
       travelerSet();
-      dispatch(setTraveler(travelerForm));
+      dispatch(setTraveler({ index: indexNo, traveler: travelerForm }));
       handleClose();
       console.log(storeForm.form);
     }
@@ -84,11 +90,11 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
           phoneCode: tempCountry[0].phoneCode,
         });
         break;
-      case "ln":
-        setTravelerForm({ ...travelerForm, ln: e });
+      case "lastName":
+        setTravelerForm({ ...travelerForm, lastName: e });
         break;
-      case "fn":
-        setTravelerForm({ ...travelerForm, fn: e });
+      case "firstName":
+        setTravelerForm({ ...travelerForm, firstName: e });
         break;
       case "gender":
         setTravelerForm({ ...travelerForm, gender: e });
@@ -109,6 +115,9 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
         const day = e.getDate();
         const combined = `${month}/${day}/${year}`;
         setTravelerForm({ ...travelerForm, dob: combined });
+        // set status age
+        const status = ageCalculate(combined, storeForm.departureDate);
+        setTravelerForm({ ...travelerForm, status: status });
         break;
       case "address":
         setTravelerForm({ ...travelerForm, address: e });
@@ -121,7 +130,6 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
 
   return (
     <div className="traveler">
-      
       {/* <div className="d-flex justify-content-between">
         <h2>Traveler</h2>
         <Button variant="primary" onClick={handleShow}>
@@ -137,7 +145,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
       >
         <Modal.Header>
           <Modal.Title>旅客 Room Index {indexNo}</Modal.Title>
-          {travelerNumber < 1 ? (
+          {indexNo == 0 ? (
             <Button variant="outline-info">與訂購人相同</Button>
           ) : (
             ""
@@ -159,7 +167,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                   type="text"
                   className="form-control shadow-sm"
                   id="validationCustom02"
-                  onChange={(e) => onChangeInput("ln", e.target.value)}
+                  onChange={(e) => onChangeInput("lastName", e.target.value)}
                   required
                 />
               </div>
@@ -171,7 +179,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                   type="text"
                   className="form-control shadow-sm"
                   id="validationCustom01"
-                  onChange={(e) => onChangeInput("fn", e.target.value)}
+                  onChange={(e) => onChangeInput("firstName", e.target.value)}
                   required
                 />
               </div>
@@ -304,6 +312,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                   )}
                   dateFormat="MM/dd/yyyy"
                   selected={startDate}
+                  maxDate={new Date() - 1}
                   required
                   onChange={(e) => onChangeInput("dob", e)}
                 />

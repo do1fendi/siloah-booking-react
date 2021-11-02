@@ -46,6 +46,7 @@ function Registrar() {
         alert("No more available room");
       }
       setIsOpen(true);
+      dispatch(setRoom())
       // childRef.current.callFromParent();
     }
     setValidated(true);
