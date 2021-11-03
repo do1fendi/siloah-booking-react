@@ -12,6 +12,7 @@ export const Room = ({ indexNo }) => {
   const [isOpen, setIsOpen] = useState(true);
   const dispatch = useDispatch();
   const childRef = useRef();
+  const [selectedOption, setSelectedOption] = useState("");
   const roomTypeAvailable = useSelector((state) => {
     const rooms = state.form.roomOccupancyTable.filter(
       (room) => room.TOURPACKAGE_GROUPPRICE_roomAvailable > 0
@@ -63,6 +64,7 @@ export const Room = ({ indexNo }) => {
 
     //Clear Traveler list room changed
     dispatch(clearTraveler({ index: indexNo }));
+    setSelectedOption("")    
   };
 
   const addTraveler = () => {
@@ -82,15 +84,16 @@ export const Room = ({ indexNo }) => {
   };
 
   return (
-    <div className="p-2 mb-2 shadow-lg mt-3 mb-3">
+    <div className="p-3 mb-2 shadow-sm mt-3 mb-3">
       {/* Room index {indexNo} */}
       <Form>
         <InputGroup className="mb-2">
-          <InputGroup.Text>Available Room</InputGroup.Text>
+          <InputGroup.Text>可用客房</InputGroup.Text>
           <Form.Select
             aria-label="Default select example"
             onChange={(e) => onChangeValue(e.target.value)}
             style={inputStyle}
+            value={selectedOption}    
           >
             <option value="">- Select -</option>
             {roomTypeAvailable.map((room, index) => (
@@ -101,16 +104,15 @@ export const Room = ({ indexNo }) => {
           </Form.Select>
         </InputGroup>
       </Form>
-        <TravelerTable indexNo={indexNo} />
+      <TravelerTable indexNo={indexNo} />
       <div className="d-flex justify-content-between">
-        <h5 className="text-green fw-bold">Selected Room: {inputRoom}</h5>
+        <h5 className="text-green fw-bold">選定房間: {inputRoom}</h5>
         <button
           type="button"
           className="btn btn-primary btn-sm"
           onClick={() => addTraveler()}
         >
-          Add Traveler{" "}
-          <span className="badge bg-danger">{roomMaxOccupancy}</span>
+          加旅客 <span className="badge bg-danger">{roomMaxOccupancy}</span>
         </button>
       </div>
       <Traveler

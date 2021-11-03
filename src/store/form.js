@@ -144,6 +144,9 @@ export const formSlice = createSlice({
     },
     updateRoomForm: (state, action) => {
       const { index, roomType } = action.payload;
+      if (!state.form.room[index].traveler) {
+        state.form.room[index].traveler = [];
+      }
       state.form.room[index].roomType = roomType;
     },
   },

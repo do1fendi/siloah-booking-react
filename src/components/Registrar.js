@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { country } from "../store/country";
 import { forwardRef, useState, useRef, useEffect } from "react";
 import { Form } from "react-bootstrap";
-import { Traveler } from "./Traveler";
 
 function Registrar() {
   const storeForm = useSelector((state) => state.form.form);
@@ -40,13 +39,13 @@ function Registrar() {
       event.preventDefault();
       event.stopPropagation();
       // add room if any available room
-      if (roomLeft > 0) {        
+      if (roomLeft > 0) {
         setRoomLeft(roomLeft - 1);
       } else {
         alert("No more available room");
       }
       setIsOpen(true);
-      dispatch(setRoom())
+      dispatch(setRoom());
       // childRef.current.callFromParent();
     }
     setValidated(true);
@@ -158,7 +157,7 @@ function Registrar() {
             Rooms <span className="fs-6">Left（{roomLeft}）</span>
           </h3>
           <button className="btn btn-primary" type="submit">
-            Add Room 
+            加房間
             {/* <span class="badge bg-danger">{roomLeft}</span> */}
           </button>
         </div>

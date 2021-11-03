@@ -1,4 +1,4 @@
-import { useState, forwardRef, useImperativeHandle } from "react";
+import { useState, forwardRef, useImperativeHandle, useRef } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import { country } from "../store/country";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,9 +9,12 @@ import { ageCalculate } from "../store/ageCalculate";
 
 export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
   const storeForm = useSelector((state) => state.form);
-  // const travelerNumber = useSelector(
-  //   (state) => state.form.form.traveler.length
-  // );
+  const formRef = useRef();
+  const isTravelerSet = useSelector((state) => {
+    if (state.form.form.room[0].traveler) {
+      if (state.form.form.room[0].traveler.length > 0) return true;
+    } else return false;
+  });
   const [startDate, setStartDate] = useState(undefined);
   const [travelerForm, setTravelerForm] = useState({
     lastName: "",
@@ -20,8 +23,9 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
     email: "",
     country: "Taiwan",
     phoneCode: "+886",
+    mobile: "",
     dob: "",
-    address: "",
+    citizenId: "",
     status: "",
   });
   const dispatch = useDispatch();
@@ -47,6 +51,21 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
+    // Clear form traveler on open
+    setStartDate(undefined);
+    setTravelerForm({
+      lastName: "",
+      firstName: "",
+      gender: "male",
+      email: "",
+      country: "Taiwan",
+      phoneCode: "+886",
+      mobile: "",
+      citizenId: "",
+      dob: "",
+      status: "",
+    });
+
     modal ? setShow(true) : setShow(false);
     if (storeForm.form.room[indexNo].traveler) {
       if (
@@ -114,18 +133,34 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
         const year = e.getFullYear();
         const day = e.getDate();
         const combined = `${month}/${day}/${year}`;
-        setTravelerForm({ ...travelerForm, dob: combined });
         // set status age
         const status = ageCalculate(combined, storeForm.departureDate);
-        setTravelerForm({ ...travelerForm, status: status });
+
+        //firs traveler set should be an adult
+        if (indexNo == 0 && !isTravelerSet && status != "adult") {
+          alert("First Traveler should be an Adult");
+          setStartDate(undefined);
+        } else
+          setTravelerForm({ ...travelerForm, dob: combined, status: status });
         break;
-      case "address":
-        setTravelerForm({ ...travelerForm, address: e });
+      case "citizenId":
+        setTravelerForm({ ...travelerForm, citizenId: e });
         break;
 
       default:
         break;
     }
+  };
+  const copyRegistrarToTraveler = () => {
+    setTravelerForm({
+      ...travelerForm,
+      firstName: storeForm.form.registrar.firstName,
+      lastName: storeForm.form.registrar.lastName,
+      email: storeForm.form.registrar.email,
+      country: storeForm.form.registrar.country,
+      phoneCode: storeForm.form.registrar.phoneCode,
+      mobile: storeForm.form.registrar.mobile,
+    });
   };
 
   return (
@@ -144,9 +179,16 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title>旅客 Room Index {indexNo}</Modal.Title>
-          {indexNo == 0 ? (
-            <Button variant="outline-info">與訂購人相同</Button>
+          <Modal.Title>
+            旅客 ({storeForm.form.room[indexNo].roomType})
+          </Modal.Title>
+          {indexNo == 0 && !isTravelerSet ? (
+            <Button
+              variant="outline-info"
+              onClick={() => copyRegistrarToTraveler()}
+            >
+              與訂購人相同
+            </Button>
           ) : (
             ""
           )}
@@ -157,6 +199,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
               className="row g-3"
               noValidate
               validated={validated}
+              ref={formRef}
               onSubmit={handleTraveler}
             >
               <div className="col-md-4">
@@ -169,6 +212,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                   id="validationCustom02"
                   onChange={(e) => onChangeInput("lastName", e.target.value)}
                   required
+                  value={travelerForm.lastName}
                 />
               </div>
               <div className="col-md-4">
@@ -181,6 +225,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                   id="validationCustom01"
                   onChange={(e) => onChangeInput("firstName", e.target.value)}
                   required
+                  value={travelerForm.firstName}
                 />
               </div>
               <div className="col-md-4">
@@ -190,9 +235,10 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                 <select
                   className="form-select shadow-sm"
                   id="validationCustom04"
-                  defaultValue="male"
+                  // defaultValue="male"
                   onChange={(e) => onChangeInput("gender", e.target.value)}
                   required
+                  value={travelerForm.gender}
                 >
                   <option value="male">男</option>
                   <option value="female">女</option>
@@ -205,9 +251,10 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                 <select
                   className="form-select shadow-sm"
                   id="validationCustom04"
-                  defaultValue={travelerForm.country}
+                  // defaultValue={travelerForm.country}
                   onChange={(e) => onChangeInput("country", e.target.value)}
                   required
+                  value={travelerForm.country}
                 >
                   {country.map((e, key) => {
                     return (
@@ -233,6 +280,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                     aria-describedby="basic-addon1"
                     onChange={(e) => onChangeInput("mobile", e.target.value)}
                     required
+                    value={travelerForm.mobile}
                   />
                 </div>
               </div>
@@ -246,6 +294,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                   id="validationCustom02"
                   onChange={(e) => onChangeInput("email", e.target.value)}
                   required
+                  value={travelerForm.email}
                 />
               </div>
               <div className="col-md-6">
@@ -316,23 +365,17 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                   required
                   onChange={(e) => onChangeInput("dob", e)}
                 />
-                {/* <DatePicker
-                  className="form-control shadow-sm"
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
-                  maxDate={new Date()}
-                /> */}
               </div>
 
               <div className="col-md-12">
                 <label htmlFor="validationCustom02" className="form-label">
-                  地址/ Address
+                  身份證/ Id
                 </label>
                 <input
                   type="text"
                   className="form-control shadow-sm"
                   id="validationCustom02"
-                  onChange={(e) => onChangeInput("address", e.target.value)}
+                  onChange={(e) => onChangeInput("citizenId", e.target.value)}
                   required
                 />
               </div>
