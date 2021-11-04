@@ -5,7 +5,7 @@ import { updateRoomTable, updateRoomForm, clearTraveler } from "../store/form";
 import { Traveler } from "./Traveler";
 import { TravelerTable } from "./TravelerTable";
 
-export const Room = ({ indexNo, triggerHandleAddRoom }) => {
+export const Room = ({ indexNo, checkRegistrarForm }) => {
   const [inputRoom, setInputRoom] = useState("");
   const [roomMaxOccupancy, setRoomMaxOccupancy] = useState(0);
   const [inputStyle, setInputStyle] = useState({ borderColor: "" });
@@ -24,6 +24,19 @@ export const Room = ({ indexNo, triggerHandleAddRoom }) => {
     return curRooms;
   });
   const roomOccupancy = useSelector((state) => state.form.roomOccupancyTable);
+  const registrarIsSet = useSelector((state) => {
+    const keys = [
+      "phoneCode",
+      "lastName",
+      "firstName",
+      "email",
+      "address",
+      "mobile",
+    ];
+    const registrarObj = state.form.form.registrar;
+    const hasAllKeys = keys.every((key) => registrarObj.hasOwnProperty(key));
+    return hasAllKeys;
+  });
 
   const onChangeValue = (ev) => {
     setInputRoom(ev);
@@ -64,15 +77,17 @@ export const Room = ({ indexNo, triggerHandleAddRoom }) => {
 
     //Clear Traveler list room changed
     dispatch(clearTraveler({ index: indexNo }));
-    setSelectedOption("")    
+    setSelectedOption("");
   };
 
   const addTraveler = () => {
-    console.log(triggerHandleAddRoom())
+    checkRegistrarForm();
     if (inputRoom === "") {
       setInputStyle({ borderColor: "red" });
     } else if (roomMaxOccupancy == 0) {
       alert("Treveler limit reach");
+    } else if (!registrarIsSet) {
+      alert("Please fill all 訂購人");
     } else {
       setInputStyle({ borderColor: "green" });
       setIsOpen(true);
@@ -94,7 +109,7 @@ export const Room = ({ indexNo, triggerHandleAddRoom }) => {
             aria-label="Default select example"
             onChange={(e) => onChangeValue(e.target.value)}
             style={inputStyle}
-            value={selectedOption}    
+            value={selectedOption}
           >
             <option value="">- Select -</option>
             {roomTypeAvailable.map((room, index) => (

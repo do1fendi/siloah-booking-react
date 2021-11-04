@@ -1,14 +1,17 @@
-import { setRegistrar, setRoom } from "../store/form";
+import { setRegistrar } from "../store/form";
 import { useDispatch, useSelector } from "react-redux";
 import { country } from "../store/country";
-import { forwardRef, useState, useRef, useEffect } from "react";
+import {
+  forwardRef,
+  useState,
+  useRef,
+  useImperativeHandle,
+} from "react";
 import { Form } from "react-bootstrap";
-import { Room } from "./Room";
 
-function Registrar() {
+const Registrar = forwardRef((props, ref) => {
   const storeForm = useSelector((state) => state.form.form);
   const registrarFormRef = useRef(null);
-  const rooms = useSelector((state) => state.form.form.room);
   const availableRoom = useSelector((state) => {
     const currPriceTable = state.form.priceTable;
     const x = currPriceTable.reduce(
@@ -17,12 +20,8 @@ function Registrar() {
     );
     return x;
   });
-  const [roomLeft, setRoomLeft] = useState(0);
-  const limit = useSelector((state) => state.form.availableSeat);
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
-  // const [isOpen, setIsOpen] = useState(true);
-  const childRef = useRef();
 
   const onChangeInput = (input, e) => {
     dispatch(setRegistrar({ input: input, value: e }));
@@ -32,38 +31,25 @@ function Registrar() {
       dispatch(setRegistrar({ input: "phoneCode", value: phoneCode }));
     }
   };
-
-  const triggerHandleAddRoom = () => {
-    registrarFormRef.current.dispatchEvent(
-      new Event("submit", { bubbles: true, cancelable: true })
-    );
-  };
+  useImperativeHandle(ref, () => ({
+    triggerHandleAddRoom() {
+      registrarFormRef.current.dispatchEvent(
+        new Event("submit", { bubbles: true, cancelable: true })
+      );
+    },
+  }));
 
   const handleAddRoom = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
-      // setIsOpen(false);
     } else {
       event.preventDefault();
       event.stopPropagation();
-      // add room if any available room
-      // if (roomLeft > 0) {
-      //   setRoomLeft(roomLeft - 1);
-      // } else {
-      //   alert("No more available room");
-      // }
-      // setIsOpen(true);
-      // dispatch(setRoom());
-      // childRef.current.callFromParent();
     }
     setValidated(true);
   };
-
-  useEffect(() => {
-    setRoomLeft(availableRoom);
-  }, [availableRoom]);
 
   return (
     <div className="registrar">
@@ -143,7 +129,7 @@ function Registrar() {
             </span> */}
             <input
               type="text"
-              className="form-control shadow-sm w-25"
+              className="form-control shadow-sm w-25 text-center"
               aria-label="phoneNumber"
               aria-describedby="basic-addon1"
               onChange={(e) => onChangeInput("phoneCode", e.target.value)}
@@ -174,16 +160,16 @@ function Registrar() {
           />
         </div>
 
-        {rooms.map((room, index) => (
+        {/* {rooms.map((room, index) => (
           <Room
             key={index}
             indexNo={index}
             triggerHandleAddRoom={triggerHandleAddRoom}
           />
-        ))}
+        ))} */}
       </Form>
     </div>
   );
-}
+});
 
-export default forwardRef(Registrar);
+export default Registrar;
