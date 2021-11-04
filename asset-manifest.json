@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/siloah-booking-react/static/css/main.13cfee4b.chunk.css",
-    "main.js": "/siloah-booking-react/static/js/main.8a1deb56.chunk.js",
-    "main.js.map": "/siloah-booking-react/static/js/main.8a1deb56.chunk.js.map",
+    "main.css": "/siloah-booking-react/static/css/main.3fb7c89c.chunk.css",
+    "main.js": "/siloah-booking-react/static/js/main.4b56e202.chunk.js",
+    "main.js.map": "/siloah-booking-react/static/js/main.4b56e202.chunk.js.map",
     "runtime-main.js": "/siloah-booking-react/static/js/runtime-main.cf02ccff.js",
     "runtime-main.js.map": "/siloah-booking-react/static/js/runtime-main.cf02ccff.js.map",
     "static/css/2.e8051837.chunk.css": "/siloah-booking-react/static/css/2.e8051837.chunk.css",
-    "static/js/2.9c42ca4d.chunk.js": "/siloah-booking-react/static/js/2.9c42ca4d.chunk.js",
-    "static/js/2.9c42ca4d.chunk.js.map": "/siloah-booking-react/static/js/2.9c42ca4d.chunk.js.map",
+    "static/js/2.92d58e8e.chunk.js": "/siloah-booking-react/static/js/2.92d58e8e.chunk.js",
+    "static/js/2.92d58e8e.chunk.js.map": "/siloah-booking-react/static/js/2.92d58e8e.chunk.js.map",
     "static/js/3.77a3f288.chunk.js": "/siloah-booking-react/static/js/3.77a3f288.chunk.js",
     "static/js/3.77a3f288.chunk.js.map": "/siloah-booking-react/static/js/3.77a3f288.chunk.js.map",
     "index.html": "/siloah-booking-react/index.html",
     "static/css/2.e8051837.chunk.css.map": "/siloah-booking-react/static/css/2.e8051837.chunk.css.map",
-    "static/css/main.13cfee4b.chunk.css.map": "/siloah-booking-react/static/css/main.13cfee4b.chunk.css.map",
-    "static/js/2.9c42ca4d.chunk.js.LICENSE.txt": "/siloah-booking-react/static/js/2.9c42ca4d.chunk.js.LICENSE.txt"
+    "static/css/main.3fb7c89c.chunk.css.map": "/siloah-booking-react/static/css/main.3fb7c89c.chunk.css.map",
+    "static/js/2.92d58e8e.chunk.js.LICENSE.txt": "/siloah-booking-react/static/js/2.92d58e8e.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.cf02ccff.js",
     "static/css/2.e8051837.chunk.css",
-    "static/js/2.9c42ca4d.chunk.js",
-    "static/css/main.13cfee4b.chunk.css",
-    "static/js/main.8a1deb56.chunk.js"
+    "static/js/2.92d58e8e.chunk.js",
+    "static/css/main.3fb7c89c.chunk.css",
+    "static/js/main.4b56e202.chunk.js"
   ]
 }
