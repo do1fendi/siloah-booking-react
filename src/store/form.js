@@ -17,10 +17,10 @@ const initialState = {
   roomOccupancyTable: [],
   form: {
     registrar: {
-      country: "Taiwan",
+      // country: "Taiwan",
       phoneCode: "+886",
     },
-    room: [],
+    room: [{}],
   },
 };
 

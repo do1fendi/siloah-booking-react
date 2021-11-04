@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { country } from "../store/country";
 import { forwardRef, useState, useRef, useEffect } from "react";
 import { Form } from "react-bootstrap";
+import { Room } from "./Room";
 
 function Registrar() {
   const storeForm = useSelector((state) => state.form.form);
+  const registrarFormRef = useRef(null);
+  const rooms = useSelector((state) => state.form.form.room);
   const availableRoom = useSelector((state) => {
     const currPriceTable = state.form.priceTable;
     const x = currPriceTable.reduce(
@@ -18,7 +21,7 @@ function Registrar() {
   const limit = useSelector((state) => state.form.availableSeat);
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
-  const [isOpen, setIsOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(true);
   const childRef = useRef();
 
   const onChangeInput = (input, e) => {
@@ -30,22 +33,29 @@ function Registrar() {
     }
   };
 
+  const triggerHandleAddRoom = () => {
+    registrarFormRef.current.dispatchEvent(
+      new Event("submit", { bubbles: true, cancelable: true })
+    );
+  };
+
   const handleAddRoom = (event) => {
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
+      // setIsOpen(false);
     } else {
       event.preventDefault();
       event.stopPropagation();
       // add room if any available room
-      if (roomLeft > 0) {
-        setRoomLeft(roomLeft - 1);
-      } else {
-        alert("No more available room");
-      }
-      setIsOpen(true);
-      dispatch(setRoom());
+      // if (roomLeft > 0) {
+      //   setRoomLeft(roomLeft - 1);
+      // } else {
+      //   alert("No more available room");
+      // }
+      // setIsOpen(true);
+      // dispatch(setRoom());
       // childRef.current.callFromParent();
     }
     setValidated(true);
@@ -64,6 +74,7 @@ function Registrar() {
         noValidate
         validated={validated}
         onSubmit={handleAddRoom}
+        ref={registrarFormRef}
       >
         <div className="col-md-6">
           <label htmlFor="validationCustom02" className="form-label">
@@ -102,7 +113,7 @@ function Registrar() {
           />
           <div className="invalid-feedback">Email wrong.</div>
         </div>
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           <label htmlFor="validationCustom04" className="form-label">
             國家/ Country
           </label>
@@ -121,18 +132,28 @@ function Registrar() {
               );
             })}
           </select>
-        </div>
-        <div className="col-md-6">
+        </div> */}
+        <div className="col-sm-12">
           <label htmlFor="validationCustom04" className="form-label">
             聯絡電話/ Contact Number
           </label>
           <div className="input-group">
-            <span className="input-group-text" id="basic-addon1">
-              {storeForm.registrar.phoneCode}
-            </span>
+            {/* <span className="input-group-text" id="basic-addon1">
+              
+            </span> */}
+            <input
+              type="text"
+              className="form-control shadow-sm w-25"
+              aria-label="phoneNumber"
+              aria-describedby="basic-addon1"
+              onChange={(e) => onChangeInput("phoneCode", e.target.value)}
+              required
+              defaultValue={storeForm.registrar.phoneCode}
+              // value={storeForm.registrar.phoneCode}
+            />
             <input
               type="number"
-              className="form-control shadow-sm"
+              className="form-control shadow-sm w-75"
               aria-label="phoneNumber"
               aria-describedby="basic-addon1"
               onChange={(e) => onChangeInput("mobile", e.target.value)}
@@ -152,19 +173,15 @@ function Registrar() {
             required
           />
         </div>
-        <div className="d-flex justify-content-between mt-5">
-          <h3>
-            Rooms <span className="fs-6">Left（{roomLeft}）</span>
-          </h3>
-          <button className="btn btn-primary" type="submit">
-            加房間
-            {/* <span class="badge bg-danger">{roomLeft}</span> */}
-          </button>
-        </div>
-        {/* <Traveler ref={childRef} modal={isOpen} /> */}
-        {/* {roomLeft} */}
+
+        {rooms.map((room, index) => (
+          <Room
+            key={index}
+            indexNo={index}
+            triggerHandleAddRoom={triggerHandleAddRoom}
+          />
+        ))}
       </Form>
-      {/* <p>{JSON.stringify(storeForm)}</p> */}
     </div>
   );
 }

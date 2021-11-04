@@ -5,7 +5,7 @@ import { updateRoomTable, updateRoomForm, clearTraveler } from "../store/form";
 import { Traveler } from "./Traveler";
 import { TravelerTable } from "./TravelerTable";
 
-export const Room = ({ indexNo }) => {
+export const Room = ({ indexNo, triggerHandleAddRoom }) => {
   const [inputRoom, setInputRoom] = useState("");
   const [roomMaxOccupancy, setRoomMaxOccupancy] = useState(0);
   const [inputStyle, setInputStyle] = useState({ borderColor: "" });
@@ -68,6 +68,7 @@ export const Room = ({ indexNo }) => {
   };
 
   const addTraveler = () => {
+    console.log(triggerHandleAddRoom())
     if (inputRoom === "") {
       setInputStyle({ borderColor: "red" });
     } else if (roomMaxOccupancy == 0) {
@@ -85,7 +86,7 @@ export const Room = ({ indexNo }) => {
 
   return (
     <div className="p-3 mb-2 shadow-sm mt-3 mb-3">
-      {/* Room index {indexNo} */}
+      Room index {indexNo}
       <Form>
         <InputGroup className="mb-2">
           <InputGroup.Text>可用客房</InputGroup.Text>
