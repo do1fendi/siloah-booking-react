@@ -27,6 +27,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
     dob: "",
     citizenId: "",
     status: "",
+    remark: "",
   });
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -64,6 +65,7 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
       citizenId: "",
       dob: "",
       status: "",
+      remark:"",
     });
 
     modal ? setShow(true) : setShow(false);
@@ -145,6 +147,9 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
         break;
       case "citizenId":
         setTravelerForm({ ...travelerForm, citizenId: e });
+        break;
+      case "remark":
+        setTravelerForm({ ...travelerForm, remark: e });
         break;
 
       default:
@@ -377,6 +382,17 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                   id="validationCustom02"
                   onChange={(e) => onChangeInput("citizenId", e.target.value)}
                   required
+                />
+              </div>
+              <div className="col-md-12">
+                <label htmlFor="validationCustom02" className="form-label">
+                其他特殊要求/ Remark
+                </label>
+                <input
+                  type="text"
+                  className="form-control shadow-sm"
+                  id="validationCustom02"
+                  onChange={(e) => onChangeInput("remark", e.target.value)}                  
                 />
               </div>
               <div className="d-flex gap-2 justify-content-end">
