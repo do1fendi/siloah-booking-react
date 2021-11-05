@@ -208,7 +208,7 @@ export const Traveler = forwardRef(
               ""
             )}
             {
-              isKid ? (<Badge bg="info">Only Kid</Badge>):""
+              isKid ? (<Badge bg="info">Kid Only</Badge>):""
             }
           </Modal.Header>
           <Modal.Body>
@@ -399,7 +399,7 @@ export const Traveler = forwardRef(
                   />
                 </div>
 
-                <div className="col-md-12">
+                <div className="col-md-6">
                   <label htmlFor="validationCustom02" className="form-label">
                     身份證/ Id
                   </label>
