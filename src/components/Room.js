@@ -13,6 +13,20 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
   const dispatch = useDispatch();
   const childRef = useRef();
   const [selectedOption, setSelectedOption] = useState("");
+  // set if guest less than 12 years old
+  const [isKid, setIsKid] = useState(false);
+  const isAnyKidInRoom = useSelector((state) => {
+    if (state.form.form.room[indexNo].traveler) {
+      if (state.form.form.room[indexNo].traveler.length > 0) {
+        let hasKid = false;
+        state.form.form.room[indexNo].traveler.forEach((guest) => {
+          if (guest.status === "kid" || guest.status === "infant")
+            hasKid = true;
+        });
+        return hasKid;
+      }
+    } else return false;
+  });
   const roomTypeAvailable = useSelector((state) => {
     const rooms = state.form.roomOccupancyTable.filter(
       (room) => room.TOURPACKAGE_GROUPPRICE_roomAvailable > 0
@@ -43,7 +57,7 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
     // Update store available room
     if (ev && !inputRoom) {
       const index = roomOccupancy.findIndex(
-        (item) => item.TOURPACKAGE_GROUPPRICE_roomTypeName == ev
+        (item) => item.TOURPACKAGE_GROUPPRICE_roomTypeName === ev
       );
       dispatch(updateRoomTable({ indexPrevious: null, index: index }));
     } else if (ev && inputRoom) {
@@ -51,7 +65,7 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
         (item) => item.TOURPACKAGE_GROUPPRICE_roomTypeName === inputRoom
       );
       const index = roomOccupancy.findIndex(
-        (item) => item.TOURPACKAGE_GROUPPRICE_roomTypeName == ev
+        (item) => item.TOURPACKAGE_GROUPPRICE_roomTypeName === ev
       );
       dispatch(updateRoomTable({ indexPrevious: indexPrevious, index: index }));
     } else {
@@ -63,12 +77,19 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
 
     //set max current max room occupancy
     const currRoomType = roomOccupancy.filter(
-      (room) => room.TOURPACKAGE_GROUPPRICE_roomTypeName == ev
+      (room) => room.TOURPACKAGE_GROUPPRICE_roomTypeName === ev
     );
-    if (ev != "") {
-      setRoomMaxOccupancy(
-        currRoomType[0].TOURPACKAGE_GROUPPRICE_roomMaxOccupancy
-      );
+    if (ev !== "") {
+      // if room selected not 配房, able to add kid (age < 7)
+      if (ev !== "配房") {
+        setRoomMaxOccupancy(
+          currRoomType[0].TOURPACKAGE_GROUPPRICE_roomMaxOccupancy + 1
+        );
+      } else {
+        setRoomMaxOccupancy(
+          currRoomType[0].TOURPACKAGE_GROUPPRICE_roomMaxOccupancy
+        );
+      }
       // setRoom Store
       dispatch(updateRoomForm({ index: indexNo, roomType: ev }));
     } else {
@@ -84,11 +105,18 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
     checkRegistrarForm();
     if (inputRoom === "") {
       setInputStyle({ borderColor: "red" });
-    } else if (roomMaxOccupancy == 0) {
+    } else if (roomMaxOccupancy === 0) {
       alert("Treveler limit reach");
     } else if (!registrarIsSet) {
       alert("Please fill all 訂購人");
     } else {
+      // need to compare roomMaxOccupancy with original roomMaxOccupancy
+      // console.log(roomMaxOccupancy +" - "+ roomMaxInitial)
+      if (roomMaxOccupancy === 1 && !isAnyKidInRoom) {
+        setIsKid(true);
+      } else {
+        setIsKid(false);
+      }
       setInputStyle({ borderColor: "green" });
       setIsOpen(true);
       childRef.current.callFromParent();
@@ -136,6 +164,7 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
         modal={isOpen}
         indexNo={indexNo}
         travelerSet={travelerSet}
+        isKid={isKid}
       />
     </div>
   );

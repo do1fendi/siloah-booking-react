@@ -12,14 +12,7 @@ import { Form } from "react-bootstrap";
 const Registrar = forwardRef((props, ref) => {
   const storeForm = useSelector((state) => state.form.form);
   const registrarFormRef = useRef(null);
-  const availableRoom = useSelector((state) => {
-    const currPriceTable = state.form.priceTable;
-    const x = currPriceTable.reduce(
-      (prev, curr) => prev + curr.TOURPACKAGE_GROUPPRICE_roomAvailable,
-      0
-    );
-    return x;
-  });
+  
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
 
@@ -96,8 +89,7 @@ const Registrar = forwardRef((props, ref) => {
             id="validationCustom02"
             onChange={(e) => onChangeInput("email", e.target.value)}
             required
-          />
-          <div className="invalid-feedback">Email wrong.</div>
+          />          
         </div>
         {/* <div className="col-md-6">
           <label htmlFor="validationCustom04" className="form-label">

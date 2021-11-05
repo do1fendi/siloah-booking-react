@@ -1,60 +1,23 @@
 import { useState, forwardRef, useImperativeHandle, useRef } from "react";
-import { Button, Modal, Form } from "react-bootstrap";
-import { country } from "../store/country";
+import { Button, Modal, Form, Badge } from "react-bootstrap";
+// import { country } from "../store/country";
 import { useDispatch, useSelector } from "react-redux";
 import { setTraveler } from "../store/form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ageCalculate } from "../store/ageCalculate";
 
-export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
-  const storeForm = useSelector((state) => state.form);
-  const formRef = useRef();
-  const isTravelerSet = useSelector((state) => {
-    if (state.form.form.room[0].traveler) {
-      if (state.form.form.room[0].traveler.length > 0) return true;
-    } else return false;
-  });
-  const [startDate, setStartDate] = useState(undefined);
-  const [travelerForm, setTravelerForm] = useState({
-    lastName: "",
-    firstName: "",
-    gender: "male",
-    email: "",
-    country: "Taiwan",
-    phoneCode: "+886",
-    mobile: "",
-    dob: "",
-    citizenId: "",
-    status: "",
-    remark: "",
-  });
-  const dispatch = useDispatch();
-  const [show, setShow] = useState(false);
-  const [validated, setValidated] = useState(false);
-  const range = (start, end, length = end - start + 1) =>
-    Array.from({ length }, (_, i) => start + i);
-  const years = range(1931, new Date().getFullYear() + 1);
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => {
-    // Clear form traveler on open
-    setStartDate(undefined);
-    setTravelerForm({
+export const Traveler = forwardRef(
+  ({ modal, travelerSet, indexNo, isKid }, ref) => {
+    const storeForm = useSelector((state) => state.form);
+    const formRef = useRef();
+    const isTravelerSet = useSelector((state) => {
+      if (state.form.form.room[0].traveler) {
+        if (state.form.form.room[0].traveler.length > 0) return true;
+      } else return false;
+    });
+    const [startDate, setStartDate] = useState(undefined);
+    const [travelerForm, setTravelerForm] = useState({
       lastName: "",
       firstName: "",
       gender: "male",
@@ -62,194 +25,244 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
       country: "Taiwan",
       phoneCode: "+886",
       mobile: "",
-      citizenId: "",
       dob: "",
+      citizenId: "",
       status: "",
-      remark:"",
+      remark: "",
     });
+    const dispatch = useDispatch();
+    const [show, setShow] = useState(false);
+    const [validated, setValidated] = useState(false);
+    const range = (start, end, length = end - start + 1) =>
+      Array.from({ length }, (_, i) => start + i);
+    const years = range(1931, new Date().getFullYear() + 1);
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
 
-    modal ? setShow(true) : setShow(false);
-    if (storeForm.form.room[indexNo].traveler) {
-      if (
-        storeForm.form.room[indexNo].traveler.length >= storeForm.availableSeat
-      ) {
-        alert("Limit seat exceeded");
-        setShow(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => {
+      // Clear form traveler on open
+      setStartDate(undefined);
+      setTravelerForm({
+        lastName: "",
+        firstName: "",
+        gender: "male",
+        email: "",
+        country: "Taiwan",
+        phoneCode: "+886",
+        mobile: "",
+        citizenId: "",
+        dob: "",
+        status: "",
+        remark: "",
+      });
+
+      modal ? setShow(true) : setShow(false);
+      if (storeForm.form.room[indexNo].traveler) {
+        if (
+          storeForm.form.room[indexNo].traveler.length >=
+          storeForm.availableSeat
+        ) {
+          alert("Limit seat exceeded");
+          setShow(false);
+        }
       }
-    }
-  };
+    };
 
-  useImperativeHandle(ref, () => ({
-    callFromParent() {
-      handleShow();
-      setValidated(false);
-    },
-  }));
+    useImperativeHandle(ref, () => ({
+      callFromParent() {
+        handleShow();
+        setValidated(false);
+      },
+    }));
 
-  const handleTraveler = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    } else {
-      event.preventDefault();
-      event.stopPropagation();
-      travelerSet();
-      dispatch(setTraveler({ index: indexNo, traveler: travelerForm }));
-      handleClose();
-      console.log(storeForm.form);
-    }
-    setValidated(true);
-  };
+    const handleTraveler = (event) => {
+      const form = event.currentTarget;
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+      } else {
+        event.preventDefault();
+        event.stopPropagation();
+        travelerSet();
+        dispatch(setTraveler({ index: indexNo, traveler: travelerForm }));
+        handleClose();
+        console.log(storeForm.form);
+      }
+      setValidated(true);
+    };
 
-  const onChangeInput = (input, e) => {
-    switch (input) {
-      case "country":
-        const tempCountry = country.filter((state) => state.country === e);
-        setTravelerForm({
-          ...travelerForm,
-          phoneCode: tempCountry[0].phoneCode,
-        });
-        break;
-      case "lastName":
-        setTravelerForm({ ...travelerForm, lastName: e });
-        break;
-      case "firstName":
-        setTravelerForm({ ...travelerForm, firstName: e });
-        break;
-      case "gender":
-        setTravelerForm({ ...travelerForm, gender: e });
-        break;
-      case "email":
-        setTravelerForm({ ...travelerForm, email: e });
-        break;
-      case "country":
-        setTravelerForm({ ...travelerForm, country: e });
-        break;
-      case "mobile":
-        setTravelerForm({ ...travelerForm, mobile: e });
-        break;
-      case "dob":
-        setStartDate(e);
-        const month = (e.getMonth() + 1).toString().padStart(2, "0");
-        const year = e.getFullYear();
-        const day = e.getDate();
-        const combined = `${month}/${day}/${year}`;
-        // set status age
-        const status = ageCalculate(combined, storeForm.departureDate);
+    const onChangeInput = (input, e) => {
+      switch (input) {
+        // case "country":
+        //   const tempCountry = country.filter((state) => state.country === e);
+        //   setTravelerForm({
+        //     ...travelerForm,
+        //     phoneCode: tempCountry[0].phoneCode,
+        //   });
+        //   break;
+        case "lastName":
+          setTravelerForm({ ...travelerForm, lastName: e });
+          break;
+        case "firstName":
+          setTravelerForm({ ...travelerForm, firstName: e });
+          break;
+        case "gender":
+          setTravelerForm({ ...travelerForm, gender: e });
+          break;
+        case "email":
+          setTravelerForm({ ...travelerForm, email: e });
+          break;
+        // case "country":
+        //   setTravelerForm({ ...travelerForm, country: e });
+        //   break;
+        case "phoneCode":
+          setTravelerForm({ ...travelerForm, phoneCode: e });
+          break;
+        case "mobile":
+          setTravelerForm({ ...travelerForm, mobile: e });
+          break;
+        case "dob":
+          setStartDate(e);
+          const month = (e.getMonth() + 1).toString().padStart(2, "0");
+          const year = e.getFullYear();
+          const day = e.getDate();
+          const combined = `${month}/${day}/${year}`;
+          // set status age
+          const status = ageCalculate(combined, storeForm.departureDate);
+          let youngChild = false;
+          if (status === "kid" || status === "infant") youngChild = true;
 
-        //firs traveler set should be an adult
-        if (indexNo == 0 && !isTravelerSet && status != "adult") {
-          alert("First Traveler should be an Adult");
-          setStartDate(undefined);
-        } else
-          setTravelerForm({ ...travelerForm, dob: combined, status: status });
-        break;
-      case "citizenId":
-        setTravelerForm({ ...travelerForm, citizenId: e });
-        break;
-      case "remark":
-        setTravelerForm({ ...travelerForm, remark: e });
-        break;
+          //firs traveler set should be an adult
+          if (indexNo === 0 && !isTravelerSet && status !== "adult") {
+            alert("First Traveler should be an Adult");
+            setStartDate(undefined);
+          } else if (isKid && !youngChild) {
+            alert("Can only add kid with age < 12 years old");
+            setStartDate(undefined);
+          } else
+            setTravelerForm({ ...travelerForm, dob: combined, status: status });
+          break;
+        case "citizenId":
+          setTravelerForm({ ...travelerForm, citizenId: e });
+          break;
+        case "remark":
+          setTravelerForm({ ...travelerForm, remark: e });
+          break;
 
-      default:
-        break;
-    }
-  };
-  const copyRegistrarToTraveler = () => {
-    setTravelerForm({
-      ...travelerForm,
-      firstName: storeForm.form.registrar.firstName,
-      lastName: storeForm.form.registrar.lastName,
-      email: storeForm.form.registrar.email,
-      country: storeForm.form.registrar.country,
-      phoneCode: storeForm.form.registrar.phoneCode,
-      mobile: storeForm.form.registrar.mobile,
-    });
-  };
+        default:
+          break;
+      }
+    };
+    const copyRegistrarToTraveler = () => {
+      setTravelerForm({
+        ...travelerForm,
+        firstName: storeForm.form.registrar.firstName,
+        lastName: storeForm.form.registrar.lastName,
+        email: storeForm.form.registrar.email,
+        country: storeForm.form.registrar.country,
+        phoneCode: storeForm.form.registrar.phoneCode,
+        mobile: storeForm.form.registrar.mobile,
+      });
+    };
 
-  return (
-    <div className="traveler">
-      {/* <div className="d-flex justify-content-between">
+    return (
+      <div className="traveler">
+        {/* <div className="d-flex justify-content-between">
         <h2>Traveler</h2>
         <Button variant="primary" onClick={handleShow}>
           Add Traveler
         </Button>
       </div> */}
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header>
-          <Modal.Title>
-            旅客 ({storeForm.form.room[indexNo].roomType})
-          </Modal.Title>
-          {indexNo == 0 && !isTravelerSet ? (
-            <Button
-              variant="outline-info"
-              onClick={() => copyRegistrarToTraveler()}
-            >
-              與訂購人相同
-            </Button>
-          ) : (
-            ""
-          )}
-        </Modal.Header>
-        <Modal.Body>
-          <>
-            <Form
-              className="row g-3"
-              noValidate
-              validated={validated}
-              ref={formRef}
-              onSubmit={handleTraveler}
-            >
-              <div className="col-md-4">
-                <label htmlFor="validationCustom02" className="form-label">
-                  姓氏/ Last name
-                </label>
-                <input
-                  type="text"
-                  className="form-control shadow-sm"
-                  id="validationCustom02"
-                  onChange={(e) => onChangeInput("lastName", e.target.value)}
-                  required
-                  value={travelerForm.lastName}
-                />
-              </div>
-              <div className="col-md-4">
-                <label htmlFor="validationCustom01" className="form-label">
-                  名字/ First name
-                </label>
-                <input
-                  type="text"
-                  className="form-control shadow-sm"
-                  id="validationCustom01"
-                  onChange={(e) => onChangeInput("firstName", e.target.value)}
-                  required
-                  value={travelerForm.firstName}
-                />
-              </div>
-              <div className="col-md-4">
-                <label htmlFor="validationCustom01" className="form-label">
-                  生別/ Gender
-                </label>
-                <select
-                  className="form-select shadow-sm"
-                  id="validationCustom04"
-                  // defaultValue="male"
-                  onChange={(e) => onChangeInput("gender", e.target.value)}
-                  required
-                  value={travelerForm.gender}
-                >
-                  <option value="male">男</option>
-                  <option value="female">女</option>
-                </select>
-              </div>
-              <div className="col-md-6">
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header>
+            <Modal.Title>
+              旅客 ({storeForm.form.room[indexNo].roomType})
+            </Modal.Title>
+            {indexNo === 0 && !isTravelerSet ? (
+              <Button
+                variant="outline-info"
+                onClick={() => copyRegistrarToTraveler()}
+              >
+                與訂購人相同
+              </Button>
+            ) : (
+              ""
+            )}
+            {
+              isKid ? (<Badge bg="info">Only Kid</Badge>):""
+            }
+          </Modal.Header>
+          <Modal.Body>
+            <>
+              <Form
+                className="row g-3"
+                noValidate
+                validated={validated}
+                ref={formRef}
+                onSubmit={handleTraveler}
+              >
+                <div className="col-md-4">
+                  <label htmlFor="validationCustom02" className="form-label">
+                    姓氏/ Last name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control shadow-sm"
+                    id="validationCustom02"
+                    onChange={(e) => onChangeInput("lastName", e.target.value)}
+                    required
+                    value={travelerForm.lastName}
+                  />
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="validationCustom01" className="form-label">
+                    名字/ First name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control shadow-sm"
+                    id="validationCustom01"
+                    onChange={(e) => onChangeInput("firstName", e.target.value)}
+                    required
+                    value={travelerForm.firstName}
+                  />
+                </div>
+                <div className="col-md-4">
+                  <label htmlFor="validationCustom01" className="form-label">
+                    生別/ Gender
+                  </label>
+                  <select
+                    className="form-select shadow-sm"
+                    id="validationCustom04"
+                    // defaultValue="male"
+                    onChange={(e) => onChangeInput("gender", e.target.value)}
+                    required
+                    value={travelerForm.gender}
+                  >
+                    <option value="male">男</option>
+                    <option value="female">女</option>
+                  </select>
+                </div>
+                {/* <div className="col-md-6">
                 <label htmlFor="validationCustom04" className="form-label">
                   國家/ Country
                 </label>
@@ -269,27 +282,39 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                     );
                   })}
                 </select>
-              </div>
-              <div className="col-md-6">
-                <label htmlFor="validationCustom04" className="form-label">
-                  聯絡電話/ Contact Number
-                </label>
-                <div className="input-group">
-                  <span className="input-group-text" id="basic-addon1">
+              </div> */}
+                <div className="col-sm-12">
+                  <label htmlFor="validationCustom04" className="form-label">
+                    聯絡電話/ Contact Number
+                  </label>
+                  <div className="input-group">
+                    {/* <span className="input-group-text" id="basic-addon1">
                     {travelerForm.phoneCode}
-                  </span>
-                  <input
-                    type="number"
-                    className="form-control shadow-sm"
-                    aria-label="phoneNumber"
-                    aria-describedby="basic-addon1"
-                    onChange={(e) => onChangeInput("mobile", e.target.value)}
-                    required
-                    value={travelerForm.mobile}
-                  />
+                  </span> */}
+                    <input
+                      type="text"
+                      className="form-control shadow-sm w-25 text-center"
+                      aria-label="phoneNumber"
+                      aria-describedby="basic-addon1"
+                      onChange={(e) =>
+                        onChangeInput("phoneCode", e.target.value)
+                      }
+                      required
+                      defaultValue="+886"
+                      // value={storeForm.registrar.phoneCode}
+                    />
+                    <input
+                      type="number"
+                      className="form-control shadow-sm w-75"
+                      aria-label="phoneNumber"
+                      aria-describedby="basic-addon1"
+                      onChange={(e) => onChangeInput("mobile", e.target.value)}
+                      required
+                      value={travelerForm.mobile}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="col-md-6">
+                {/* <div className="col-md-6">
                 <label htmlFor="validationCustom02" className="form-label">
                   Email
                 </label>
@@ -301,118 +326,121 @@ export const Traveler = forwardRef(({ modal, travelerSet, indexNo }, ref) => {
                   required
                   value={travelerForm.email}
                 />
-              </div>
-              <div className="col-md-6">
-                <label htmlFor="validationCustom02" className="form-label">
-                  Date of Birth
-                </label>
-                <DatePicker
-                  className="form-control shadow-sm"
-                  renderCustomHeader={({
-                    date,
-                    changeYear,
-                    changeMonth,
-                    decreaseMonth,
-                    increaseMonth,
-                    prevMonthButtonDisabled,
-                    nextMonthButtonDisabled,
-                  }) => (
-                    <div
-                      style={{
-                        margin: 10,
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {/* <button
+              </div> */}
+                <div className="col-md-6">
+                  <label htmlFor="validationCustom02" className="form-label">
+                    Date of Birth
+                  </label>
+                  <DatePicker
+                    className="form-control shadow-sm"
+                    renderCustomHeader={({
+                      date,
+                      changeYear,
+                      changeMonth,
+                      decreaseMonth,
+                      increaseMonth,
+                      prevMonthButtonDisabled,
+                      nextMonthButtonDisabled,
+                    }) => (
+                      <div
+                        style={{
+                          margin: 10,
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {/* <button
                         onClick={decreaseMonth}
                         disabled={prevMonthButtonDisabled}
                       >
                         {"<"}
                       </button> */}
-                      <select
-                        value={date.getFullYear()}
-                        onChange={({ target: { value } }) => changeYear(value)}
-                        className="rounded"
-                      >
-                        {years.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
+                        <select
+                          value={date.getFullYear()}
+                          onChange={({ target: { value } }) =>
+                            changeYear(value)
+                          }
+                          className="rounded"
+                        >
+                          {years.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
 
-                      <select
-                        value={months[date.getMonth()]}
-                        onChange={({ target: { value } }) =>
-                          changeMonth(months.indexOf(value))
-                        }
-                        className="rounded ms-2"
-                      >
-                        {months.map((option) => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
+                        <select
+                          value={months[date.getMonth()]}
+                          onChange={({ target: { value } }) =>
+                            changeMonth(months.indexOf(value))
+                          }
+                          className="rounded ms-2"
+                        >
+                          {months.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
 
-                      {/* <button
+                        {/* <button
                         onClick={increaseMonth}
                         disabled={nextMonthButtonDisabled}
                       >
                         {">"}
                       </button> */}
-                    </div>
-                  )}
-                  dateFormat="MM/dd/yyyy"
-                  selected={startDate}
-                  maxDate={new Date() - 1}
-                  required
-                  onChange={(e) => onChangeInput("dob", e)}
-                />
-              </div>
+                      </div>
+                    )}
+                    dateFormat="MM/dd/yyyy"
+                    selected={startDate}
+                    maxDate={new Date() - 1}
+                    required
+                    onChange={(e) => onChangeInput("dob", e)}
+                  />
+                </div>
 
-              <div className="col-md-12">
-                <label htmlFor="validationCustom02" className="form-label">
-                  身份證/ Id
-                </label>
-                <input
-                  type="text"
-                  className="form-control shadow-sm"
-                  id="validationCustom02"
-                  onChange={(e) => onChangeInput("citizenId", e.target.value)}
-                  required
-                />
-              </div>
-              <div className="col-md-12">
-                <label htmlFor="validationCustom02" className="form-label">
-                其他特殊要求/ Remark
-                </label>
-                <input
-                  type="text"
-                  className="form-control shadow-sm"
-                  id="validationCustom02"
-                  onChange={(e) => onChangeInput("remark", e.target.value)}                  
-                />
-              </div>
-              <div className="d-flex gap-2 justify-content-end">
-                <Button variant="secondary" onClick={handleClose}>
-                  Cancel
-                </Button>
-                <Button variant="primary" type="submit">
-                  Confirm
-                </Button>
-              </div>
-            </Form>
-          </>
-        </Modal.Body>
-        {/* <Modal.Footer>
+                <div className="col-md-12">
+                  <label htmlFor="validationCustom02" className="form-label">
+                    身份證/ Id
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control shadow-sm"
+                    id="validationCustom02"
+                    onChange={(e) => onChangeInput("citizenId", e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="col-md-12">
+                  <label htmlFor="validationCustom02" className="form-label">
+                    其他特殊要求/ Remark
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control shadow-sm"
+                    id="validationCustom02"
+                    onChange={(e) => onChangeInput("remark", e.target.value)}
+                  />
+                </div>
+                <div className="d-flex gap-2 justify-content-end">
+                  <Button variant="secondary" onClick={handleClose}>
+                    Cancel
+                  </Button>
+                  <Button variant="primary" type="submit">
+                    Confirm
+                  </Button>
+                </div>
+              </Form>
+            </>
+          </Modal.Body>
+          {/* <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
           <Button variant="primary">Submit</Button>
         </Modal.Footer> */}
-      </Modal>
-    </div>
-  );
-});
+        </Modal>
+      </div>
+    );
+  }
+);

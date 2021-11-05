@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 // import Button from "react-bootstrap/Button";
 // import Row from "react-bootstrap/Row";
 // import Col from "react-bootstrap/Col";
@@ -13,7 +13,6 @@ import { Agreement } from "./components/Agreement";
 function App() {
   // const { token } = useSelector((state) => state.filemaker);
   const [loading, setloading] = useState(false);
-  const form = useSelector((state) => state.form);
   const dispatch = useDispatch();
   const queryParams = new URLSearchParams(window.location.search);
 
@@ -49,7 +48,7 @@ function App() {
         )
       );
       setloading(false);
-      // console.log(form)
+      //  console.log(result)
       // console.log(JSON.stringify(result.data[0].fieldData).replaceAll(/(::)|[(]|[)]/g,"_"));
     })();
   }, []);

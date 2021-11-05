@@ -1,11 +1,8 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
-import { ageCalculate } from "../store/ageCalculate";
 export const Header = () => {
-  const { groupNumber, departureDate, availableSeat, tourSubject } =
+  const { departureDate, availableSeat, tourSubject } =
     useSelector((state) => state.form);
-  const [variant, setVariant] = useState("bg-success");
-  // console.log(ageCalculate("11/15/2019", departureDate));
+  
   return (
     <div className="w-100 p-2">
       <div className="alert alert-primary" role="alert">
@@ -15,7 +12,7 @@ export const Header = () => {
             Available Seat:
             <span
               className={`badge rounded-circle mx-2 ${
-                availableSeat == 0
+                availableSeat === 0
                   ? "bg-danger"
                   : availableSeat < 6
                   ? "bg-warning"
@@ -28,10 +25,6 @@ export const Header = () => {
         </div>
         <div className="col mt-2">{tourSubject}</div>
       </div>
-      {/* <h1>{groupNumber}</h1>
-      <h1>{departureDate}</h1>
-      <h1>{availableSeat}</h1>
-      <h1>{tourSubject}</h1> */}
     </div>
   );
 };

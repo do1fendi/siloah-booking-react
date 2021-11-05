@@ -1,7 +1,4 @@
-export const ageCalculate = (born, departure) => {
-  let sp = born.split("/");
-  let arranged = sp[1] + "/" + sp[2] + "/" + sp[0];
-
+export const ageCalculate = (born, departureDate) => {
   var dob = new Date(born);
   //extract the year, month, and date from user date input
 
@@ -11,7 +8,7 @@ export const ageCalculate = (born, departure) => {
 
   //get departure date
   // alert(this.GET_TOURPACKAGE.departureDate)
-  var departure = new Date(departure);
+  var departure = new Date(departureDate);
   //extract the year, month, and date from departure date
   var currentYear = departure.getYear();
   var currentMonth = departure.getMonth();
@@ -19,28 +16,28 @@ export const ageCalculate = (born, departure) => {
 
   //declare a variable to collect the age in year, month, and days
   var age = {};
-  var ageString = "";
   var yearAge = 0;
-
+  var monthAge = 0;
+  var dateAge = 0;
   //get years
   yearAge = currentYear - dobYear;
 
   //get months
   if (currentMonth >= dobMonth)
     //get months when current month is greater
-    var monthAge = currentMonth - dobMonth;
+    monthAge = currentMonth - dobMonth;
   else {
     yearAge--;
-    var monthAge = 12 + currentMonth - dobMonth;
+    monthAge = 12 + currentMonth - dobMonth;
   }
 
   //get days
   if (currentDate >= dobDate)
     //get days when the current date is greater
-    var dateAge = currentDate - dobDate;
+    dateAge = currentDate - dobDate;
   else {
     monthAge--;
-    var dateAge = 31 + currentDate - dobDate;
+    dateAge = 31 + currentDate - dobDate;
 
     if (monthAge < 0) {
       monthAge = 11;
@@ -48,15 +45,16 @@ export const ageCalculate = (born, departure) => {
     }
   }
   //group the age in a single variable
-  age = {
-    years: yearAge,
-    months: monthAge,
-    days: dateAge,
-  };
+  // age = {
+  //   years: yearAge,
+  //   months: monthAge,
+  //   days: dateAge,
+  // };
 
   //display the calculated age
 
   if (yearAge >= 12) return "adult";
-  else if (yearAge < 12 && yearAge >= 2) return "kid";
-  else if (yearAge < 2) return "infant";
+  else if (yearAge < 12 && yearAge >= 7) return "child";
+  else if (yearAge < 7 && yearAge >= 3) return "kid";
+  else if (yearAge < 3) return "infant";
 };
