@@ -8,14 +8,30 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ageCalculate } from "../store/ageCalculate";
 
 export const Traveler = forwardRef(
-  ({ modal, travelerSet, indexNo, isKid }, ref) => {
+  ({ modal, travelerSet, indexNo, isKid, isAnyKidInRoom }, ref) => {
     const storeForm = useSelector((state) => state.form);
     const formRef = useRef();
+    // check if current room has traveler
     const isTravelerSet = useSelector((state) => {
-      if (state.form.form.room[0].traveler) {
-        if (state.form.form.room[0].traveler.length > 0) return true;
+      if (state.form.form.room[indexNo].traveler) {
+        if (state.form.form.room[indexNo].traveler.length > 0) return true;
       } else return false;
     });
+    // check if current already has youngChild (kid or infant)
+    // const isHasYoungChild = useSelector((state) => {
+    //   if (state.form.form.room[indexNo].traveler) {
+    //     if (state.form.form.room[indexNo].traveler.length > 0) {
+    //       const hasYoungChild = state.form.form.room[indexNo].traveler.forEach(
+    //         (guest) => {
+    //           if (guest.status === "infant" || guest.status === "kid")
+    //             return true;
+    //           else return false;
+    //         }
+    //       );
+    //       return hasYoungChild
+    //     } else return false;
+    //   } else return false;
+    // });
     const [startDate, setStartDate] = useState(undefined);
     const [travelerForm, setTravelerForm] = useState({
       lastName: "",
@@ -142,15 +158,20 @@ export const Traveler = forwardRef(
           const combined = `${month}/${day}/${year}`;
           // set status age
           const status = ageCalculate(combined, storeForm.departureDate);
+          // youngChild is status kid or infant
           let youngChild = false;
           if (status === "kid" || status === "infant") youngChild = true;
 
           //firs traveler set should be an adult
-          if (indexNo === 0 && !isTravelerSet && status !== "adult") {
+          // if (indexNo === 0 && !isTravelerSet && status !== "adult") {
+          if (!isTravelerSet && status !== "adult") {
             alert("First Traveler should be an Adult");
             setStartDate(undefined);
           } else if (isKid && !youngChild) {
-            alert("Can only add kid with age < 12 years old");
+            alert("Can only add kid with age < 7 years old");
+            setStartDate(undefined);
+          } else if (youngChild && isAnyKidInRoom) {
+            alert("Only one kid allowed in a room");
             setStartDate(undefined);
           } else
             setTravelerForm({ ...travelerForm, dob: combined, status: status });
@@ -207,9 +228,7 @@ export const Traveler = forwardRef(
             ) : (
               ""
             )}
-            {
-              isKid ? (<Badge bg="info">Kid Only</Badge>):""
-            }
+            {isKid ? <Badge bg="info">Kid Only</Badge> : ""}
           </Modal.Header>
           <Modal.Body>
             <>

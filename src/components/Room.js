@@ -13,8 +13,9 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
   const dispatch = useDispatch();
   const childRef = useRef();
   const [selectedOption, setSelectedOption] = useState("");
-  // set if guest less than 12 years old
+  // set if guest less than 12 years old, show label in Traveler component  
   const [isKid, setIsKid] = useState(false);
+  // Check if already has any kid or infant in the room
   const isAnyKidInRoom = useSelector((state) => {
     if (state.form.form.room[indexNo].traveler) {
       if (state.form.form.room[indexNo].traveler.length > 0) {
@@ -165,6 +166,7 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
         indexNo={indexNo}
         travelerSet={travelerSet}
         isKid={isKid}
+        isAnyKidInRoom={isAnyKidInRoom}
       />
     </div>
   );
