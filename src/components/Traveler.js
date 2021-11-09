@@ -9,10 +9,23 @@ import { ageCalculate } from "../store/ageCalculate";
 
 export const Traveler = forwardRef(
   (
-    { modal, travelerSet, indexNo, isKid, isAnyKidInRoomWithBed, roomMaxOccupancy },
+    {
+      modal,
+      travelerSet,
+      indexNo,
+      isKid,
+      isAnyKidInRoomWithBed,
+      roomMaxOccupancy,
+    },
     ref
   ) => {
     const storeForm = useSelector((state) => state.form);
+    //set price table
+    const priceTable = useSelector((state) => state.form.priceTable);
+    const currRoomType = storeForm.form.room[indexNo].roomType;
+    const filteredTable = priceTable.filter(
+      (arr) => arr.TOURPACKAGE_GROUPPRICE_roomTypeName === currRoomType
+    );
     const formRef = useRef();
     // check if current room has traveler
     const isTravelerSet = useSelector((state) => {
@@ -32,9 +45,9 @@ export const Traveler = forwardRef(
         } else return true;
       } else return true;
     });
-    
+
     // console.log(isKid);
-    const [lblKid, setLblKid] = useState(false)
+    const [lblKid, setLblKid] = useState(false);
     const [showKidBed, setShowKidBed] = useState(false);
     const [startDate, setStartDate] = useState(undefined);
     const [travelerForm, setTravelerForm] = useState({
@@ -50,6 +63,7 @@ export const Traveler = forwardRef(
       status: "",
       kidWithBed: false,
       remark: "",
+      price: 0,
     });
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
@@ -90,12 +104,12 @@ export const Traveler = forwardRef(
         status: "",
         kidWithBed: false,
         remark: "",
+        price: 0,
       });
-
+      // console.log(priceTable);
       modal ? setShow(true) : setShow(false);
-      if(!isStillHasBed && isAnyKidInRoomWithBed) setLblKid(true)
-      console.log(isStillHasBed)
-      console.log(isAnyKidInRoomWithBed)
+      if (!isStillHasBed && isAnyKidInRoomWithBed) setLblKid(true);
+
       if (storeForm.form.room[indexNo].traveler) {
         if (
           storeForm.form.room[indexNo].traveler.length >=
@@ -125,7 +139,6 @@ export const Traveler = forwardRef(
         travelerSet();
         dispatch(setTraveler({ index: indexNo, traveler: travelerForm }));
         handleClose();
-        console.log(storeForm.form);
       }
       setValidated(true);
     };
@@ -161,7 +174,28 @@ export const Traveler = forwardRef(
           setTravelerForm({ ...travelerForm, mobile: e });
           break;
         case "kidWithBed":
-          setTravelerForm({ ...travelerForm, kidWithBed: e });
+          // if kid with bed use child price else use original price
+          if (e) {
+            setTravelerForm({
+              ...travelerForm,
+              price: filteredTable[0].TOURPACKAGE_GROUPPRICE_child,
+              kidWithBed: true,
+            });
+          } else {
+            if (travelerForm.status === "kid")
+              setTravelerForm({
+                ...travelerForm,
+                price: filteredTable[0].TOURPACKAGE_GROUPPRICE_kid,
+                kidWithBed: false,
+              });
+            else
+              setTravelerForm({
+                ...travelerForm,
+                price: filteredTable[0].TOURPACKAGE_GROUPPRICE_infant,
+                kidWithBed: false,
+              });
+          }
+
           break;
         case "dob":
           setStartDate(e);
@@ -178,7 +212,7 @@ export const Traveler = forwardRef(
           // if youngChild setShow
           if (isStillHasBed && youngChild) setShowKidBed(true);
           else setShowKidBed(false);
-          
+
           //firs traveler set should be an adult
           // if (indexNo === 0 && !isTravelerSet && status !== "adult") {
           if (!isTravelerSet && status !== "adult") {
@@ -194,9 +228,29 @@ export const Traveler = forwardRef(
           }*/ else if (!youngChild && !isStillHasBed && isAnyKidInRoomWithBed) {
             alert("Can only add kid with age < 7 years old");
             setStartDate(undefined);
-          } else
+          } else {
             setTravelerForm({ ...travelerForm, dob: combined, status: status });
-          console.log(storeForm);
+            // Set Price'
+            let price = 0;
+            switch (status) {
+              case "adult":
+                price = filteredTable[0].TOURPACKAGE_GROUPPRICE_adult;
+                break;
+              case "child":
+                price = filteredTable[0].TOURPACKAGE_GROUPPRICE_child;
+                break;
+              case "kid":
+                price = filteredTable[0].TOURPACKAGE_GROUPPRICE_kid;
+                break;
+              case "infant":
+                price = filteredTable[0].TOURPACKAGE_GROUPPRICE_infant;
+                break;
+              default:
+                break;
+            }
+            setTravelerForm({ ...travelerForm, price: price });
+          }
+
           break;
         case "citizenId":
           setTravelerForm({ ...travelerForm, citizenId: e });
@@ -482,6 +536,7 @@ export const Traveler = forwardRef(
                     onChange={(e) => onChangeInput("remark", e.target.value)}
                   />
                 </div>
+                <h3>{travelerForm.price}</h3>
                 <div className="d-flex gap-2 justify-content-end">
                   <Button variant="secondary" onClick={handleClose}>
                     Cancel
