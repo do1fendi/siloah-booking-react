@@ -13,17 +13,17 @@ export const TravelerTable = ({ indexNo }) => {
                 <th className="text-center">#</th>
                 <th>Name</th>
                 <th>Status</th>
-                <th>Mobile</th>
+                <th>Price</th>
               </tr>
             </thead>
             <tbody>
-              {travelers.map(({ firstName, lastName, mobile, status }, index) => {
+              {travelers.map(({ firstName, lastName, price, status }, index) => {
                 return (
                   <tr key={index}>
                     <td className="text-center">{index + 1}</td>
                     <td>{lastName + " " + firstName}</td>
                     <td>{status}</td>
-                    <td>{mobile}</td>
+                    <td>{price}</td>
                   </tr>
                 );
               })}

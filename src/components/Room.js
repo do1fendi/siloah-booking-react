@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Form, InputGroup } from "react-bootstrap";
+import { Form, InputGroup, Badge } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { updateRoomTable, updateRoomForm, clearTraveler } from "../store/form";
 import { Traveler } from "./Traveler";
@@ -19,27 +19,26 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
   const isAnyKidInRoomWithBed = useSelector((state) => {
     if (state.form.form.room[indexNo].traveler) {
       if (state.form.form.room[indexNo].traveler.length > 0) {
-        let hasKid = false;
-        state.form.form.room[indexNo].traveler.forEach((guest) => {
-          if (guest.status === "kid" || guest.status === "infant") {
-            if (guest.kidWithBed === true) hasKid = true;
-            else hasKid = false;
-          }
-        });
-        return hasKid;
+        return (function userExists() {
+          return state.form.form.room[indexNo].traveler.some(function (el) {
+            if (el.status === "kid" || el.status === "infant") {
+              if (el.kidWithBed === true) return true;
+              else return false;
+            } else return false;
+          });
+        })();
       }
     } else return false;
   });
   const isAnyKidInRoom = useSelector((state) => {
     if (state.form.form.room[indexNo].traveler) {
       if (state.form.form.room[indexNo].traveler.length > 0) {
-        let hasKid = false;
-        state.form.form.room[indexNo].traveler.forEach((guest) => {
-          if (guest.status === "kid" || guest.status === "infant") {
-            hasKid = true;
-          } else hasKid = false;
-        });
-        return hasKid;
+        return (function userExists() {
+          return state.form.form.room[indexNo].traveler.some(function (el) {
+            if (el.status === "kid" || el.status === "infant") return true;
+            else return false;
+          });
+        })();
       }
     } else return false;
   });
@@ -119,6 +118,12 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
 
   const addTraveler = () => {
     checkRegistrarForm();
+    // console.log(
+    //   "isAnyKidInRoom: " +
+    //     isAnyKidInRoom +
+    //     ", isAnyKidInRoomWithBed: " +
+    //     isAnyKidInRoomWithBed
+    // );
     if (inputRoom === "") {
       setInputStyle({ borderColor: "red" });
     } else if (roomMaxOccupancy === 0) {
@@ -131,12 +136,14 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
       if (roomMaxOccupancy === 1 && !isAnyKidInRoomWithBed && !isAnyKidInRoom) {
         // if (roomMaxOccupancy === 1) {
         setIsKid(true);
+      } else if (roomMaxOccupancy === 1 && isAnyKidInRoomWithBed) {
+        setIsKid(true);
       } else if (
         roomMaxOccupancy === 1 &&
-        isAnyKidInRoomWithBed &&
-        isAnyKidInRoom
+        isAnyKidInRoom &&
+        !isAnyKidInRoomWithBed
       ) {
-        setIsKid(true);
+        setIsKid(false);
       } else {
         setIsKid(false);
       }
@@ -151,8 +158,11 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
   };
 
   return (
-    <div className="p-3 mb-2 shadow-sm mt-3 mb-3">
-      Room index {indexNo}
+    <div className="p-2 mb-2 shadow-sm mt-3 mb-3">
+      <Badge bg="warning" text="dark" className="mb-2">
+        Room {indexNo + 1}
+      </Badge>
+
       <Form>
         <InputGroup className="mb-2">
           <InputGroup.Text>可用客房</InputGroup.Text>

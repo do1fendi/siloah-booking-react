@@ -225,11 +225,10 @@ export const Traveler = forwardRef(
           } /*else if (youngChild && isAnyKidInRoom) {
             alert("Only one kid allowed in a room");
             setStartDate(undefined);
-          }*/ else if (!youngChild && !isStillHasBed && isAnyKidInRoomWithBed) {
+          } else if (isKid && youngChild && !isStillHasBed && isAnyKidInRoomWithBed) {
             alert("Can only add kid with age < 7 years old");
             setStartDate(undefined);
-          } else {
-            setTravelerForm({ ...travelerForm, dob: combined, status: status });
+          } */else {            
             // Set Price'
             let price = 0;
             switch (status) {
@@ -248,7 +247,7 @@ export const Traveler = forwardRef(
               default:
                 break;
             }
-            setTravelerForm({ ...travelerForm, price: price });
+            setTravelerForm({ ...travelerForm,dob: combined, status: status, price: price });
           }
 
           break;
@@ -304,7 +303,7 @@ export const Traveler = forwardRef(
             ) : (
               ""
             )}
-            {isKid || lblKid ? <Badge bg="info">Kid Only</Badge> : ""}
+            {isKid ? <Badge bg="info">Kid Only</Badge> : ""}
           </Modal.Header>
           <Modal.Body>
             <>
@@ -536,7 +535,7 @@ export const Traveler = forwardRef(
                     onChange={(e) => onChangeInput("remark", e.target.value)}
                   />
                 </div>
-                <h3>{travelerForm.price}</h3>
+                <h3>Price: {travelerForm.price} NTD</h3>
                 <div className="d-flex gap-2 justify-content-end">
                   <Button variant="secondary" onClick={handleClose}>
                     Cancel
