@@ -13,16 +13,31 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
   const dispatch = useDispatch();
   const childRef = useRef();
   const [selectedOption, setSelectedOption] = useState("");
-  // set if guest less than 12 years old, show label in Traveler component  
+  // set if guest less than 12 years old, show label in Traveler component
   const [isKid, setIsKid] = useState(false);
   // Check if already has any kid or infant in the room
+  const isAnyKidInRoomWithBed = useSelector((state) => {
+    if (state.form.form.room[indexNo].traveler) {
+      if (state.form.form.room[indexNo].traveler.length > 0) {
+        let hasKid = false;
+        state.form.form.room[indexNo].traveler.forEach((guest) => {
+          if (guest.status === "kid" || guest.status === "infant") {
+            if (guest.kidWithBed === true) hasKid = true;
+            else hasKid = false;
+          }
+        });
+        return hasKid;
+      }
+    } else return false;
+  });
   const isAnyKidInRoom = useSelector((state) => {
     if (state.form.form.room[indexNo].traveler) {
       if (state.form.form.room[indexNo].traveler.length > 0) {
         let hasKid = false;
         state.form.form.room[indexNo].traveler.forEach((guest) => {
-          if (guest.status === "kid" || guest.status === "infant")
+          if (guest.status === "kid" || guest.status === "infant") {
             hasKid = true;
+          } else hasKid = false;
         });
         return hasKid;
       }
@@ -113,7 +128,14 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
     } else {
       // need to compare roomMaxOccupancy with original roomMaxOccupancy
       // console.log(roomMaxOccupancy +" - "+ roomMaxInitial)
-      if (roomMaxOccupancy === 1 && !isAnyKidInRoom) {
+      if (roomMaxOccupancy === 1 && !isAnyKidInRoomWithBed && !isAnyKidInRoom) {
+        // if (roomMaxOccupancy === 1) {
+        setIsKid(true);
+      } else if (
+        roomMaxOccupancy === 1 &&
+        isAnyKidInRoomWithBed &&
+        isAnyKidInRoom
+      ) {
         setIsKid(true);
       } else {
         setIsKid(false);
@@ -166,7 +188,8 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
         indexNo={indexNo}
         travelerSet={travelerSet}
         isKid={isKid}
-        isAnyKidInRoom={isAnyKidInRoom}
+        roomMaxOccupancy={roomMaxOccupancy}
+        isAnyKidInRoomWithBed={isAnyKidInRoomWithBed}
       />
     </div>
   );

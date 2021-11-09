@@ -8,30 +8,34 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ageCalculate } from "../store/ageCalculate";
 
 export const Traveler = forwardRef(
-  ({ modal, travelerSet, indexNo, isKid, isAnyKidInRoom }, ref) => {
+  (
+    { modal, travelerSet, indexNo, isKid, isAnyKidInRoomWithBed, roomMaxOccupancy },
+    ref
+  ) => {
     const storeForm = useSelector((state) => state.form);
     const formRef = useRef();
     // check if current room has traveler
     const isTravelerSet = useSelector((state) => {
       if (state.form.form.room[indexNo].traveler) {
-        if (state.form.form.room[indexNo].traveler.length > 0) return true;
+        if (state.form.form.room[indexNo].traveler.length > 0) {
+          // if (state.form.form.room[indexNo].traveler.length >= roomMaxOccupancy)
+          //   setIsStillHasBed(false);
+          return true;
+        }
       } else return false;
     });
-    // check if current already has youngChild (kid or infant)
-    // const isHasYoungChild = useSelector((state) => {
-    //   if (state.form.form.room[indexNo].traveler) {
-    //     if (state.form.form.room[indexNo].traveler.length > 0) {
-    //       const hasYoungChild = state.form.form.room[indexNo].traveler.forEach(
-    //         (guest) => {
-    //           if (guest.status === "infant" || guest.status === "kid")
-    //             return true;
-    //           else return false;
-    //         }
-    //       );
-    //       return hasYoungChild
-    //     } else return false;
-    //   } else return false;
-    // });
+    // check if current room still has bed, so can set a bed for kid
+    const isStillHasBed = useSelector((state) => {
+      if (state.form.form.room[indexNo].traveler) {
+        if (state.form.form.room[indexNo].traveler.length >= roomMaxOccupancy) {
+          return false;
+        } else return true;
+      } else return true;
+    });
+    
+    // console.log(isKid);
+    const [lblKid, setLblKid] = useState(false)
+    const [showKidBed, setShowKidBed] = useState(false);
     const [startDate, setStartDate] = useState(undefined);
     const [travelerForm, setTravelerForm] = useState({
       lastName: "",
@@ -44,6 +48,7 @@ export const Traveler = forwardRef(
       dob: "",
       citizenId: "",
       status: "",
+      kidWithBed: false,
       remark: "",
     });
     const dispatch = useDispatch();
@@ -71,6 +76,7 @@ export const Traveler = forwardRef(
     const handleShow = () => {
       // Clear form traveler on open
       setStartDate(undefined);
+      setShowKidBed(false);
       setTravelerForm({
         lastName: "",
         firstName: "",
@@ -82,10 +88,14 @@ export const Traveler = forwardRef(
         citizenId: "",
         dob: "",
         status: "",
+        kidWithBed: false,
         remark: "",
       });
 
       modal ? setShow(true) : setShow(false);
+      if(!isStillHasBed && isAnyKidInRoomWithBed) setLblKid(true)
+      console.log(isStillHasBed)
+      console.log(isAnyKidInRoomWithBed)
       if (storeForm.form.room[indexNo].traveler) {
         if (
           storeForm.form.room[indexNo].traveler.length >=
@@ -150,6 +160,9 @@ export const Traveler = forwardRef(
         case "mobile":
           setTravelerForm({ ...travelerForm, mobile: e });
           break;
+        case "kidWithBed":
+          setTravelerForm({ ...travelerForm, kidWithBed: e });
+          break;
         case "dob":
           setStartDate(e);
           const month = (e.getMonth() + 1).toString().padStart(2, "0");
@@ -162,19 +175,28 @@ export const Traveler = forwardRef(
           let youngChild = false;
           if (status === "kid" || status === "infant") youngChild = true;
 
+          // if youngChild setShow
+          if (isStillHasBed && youngChild) setShowKidBed(true);
+          else setShowKidBed(false);
+          
           //firs traveler set should be an adult
           // if (indexNo === 0 && !isTravelerSet && status !== "adult") {
           if (!isTravelerSet && status !== "adult") {
             alert("First Traveler should be an Adult");
+            setShowKidBed(false);
             setStartDate(undefined);
           } else if (isKid && !youngChild) {
             alert("Can only add kid with age < 7 years old");
             setStartDate(undefined);
-          } else if (youngChild && isAnyKidInRoom) {
+          } /*else if (youngChild && isAnyKidInRoom) {
             alert("Only one kid allowed in a room");
+            setStartDate(undefined);
+          }*/ else if (!youngChild && !isStillHasBed && isAnyKidInRoomWithBed) {
+            alert("Can only add kid with age < 7 years old");
             setStartDate(undefined);
           } else
             setTravelerForm({ ...travelerForm, dob: combined, status: status });
+          console.log(storeForm);
           break;
         case "citizenId":
           setTravelerForm({ ...travelerForm, citizenId: e });
@@ -228,7 +250,7 @@ export const Traveler = forwardRef(
             ) : (
               ""
             )}
-            {isKid ? <Badge bg="info">Kid Only</Badge> : ""}
+            {isKid || lblKid ? <Badge bg="info">Kid Only</Badge> : ""}
           </Modal.Header>
           <Modal.Body>
             <>
@@ -302,6 +324,7 @@ export const Traveler = forwardRef(
                   })}
                 </select>
               </div> */}
+                {}
                 <div className="col-sm-12">
                   <label htmlFor="validationCustom04" className="form-label">
                     聯絡電話/ Contact Number
@@ -430,6 +453,24 @@ export const Traveler = forwardRef(
                     required
                   />
                 </div>
+                {showKidBed ? (
+                  <div className="col-12">
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="invalidCheck"
+                        onChange={(e) =>
+                          onChangeInput("kidWithBed", e.target.checked)
+                        }
+                      />
+                      <label className="">With Bed</label>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
+
                 <div className="col-md-12">
                   <label htmlFor="validationCustom02" className="form-label">
                     其他特殊要求/ Remark
