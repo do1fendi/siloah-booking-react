@@ -19,8 +19,12 @@ const initialState = {
     registrar: {
       // country: "Taiwan",
       phoneCode: "+886",
+      receiptName: "",
+      receiptNo: "",
+      receiptNote: "",
     },
     room: [{}],
+    totalPrice: 0,
   },
 };
 
@@ -135,9 +139,9 @@ export const formSlice = createSlice({
       state.form.room[index].traveler.push(traveler);
       // state.form.traveler.push(action.payload);
     },
-    clearTraveler:(state,action) => {
-      const {index} = action.payload
-      if(state.form.room[index].traveler) state.form.room[index].traveler = []
+    clearTraveler: (state, action) => {
+      const { index } = action.payload;
+      if (state.form.room[index].traveler) state.form.room[index].traveler = [];
     },
     setRoom: (state) => {
       state.form.room.push({});
@@ -148,6 +152,26 @@ export const formSlice = createSlice({
         state.form.room[index].traveler = [];
       }
       state.form.room[index].roomType = roomType;
+    },
+    setTotalPrice: (state, action) => {
+      state.form.totalPrice = action.payload;
+    },
+    setReceipt: (state, action) => {
+      const { input, value } = action.payload;
+      switch (input) {
+        case "receiptName":
+          state.form.registrar.receiptName = value;
+          break;
+        case "receiptNo":
+          state.form.registrar.receiptNo = value;
+          break;
+        case "receiptNote":
+          state.form.registrar.receiptNote = value;
+          break;
+
+        default:
+          break;
+      }
     },
   },
 });
@@ -161,5 +185,7 @@ export const {
   setPriceTable,
   setRoom,
   updateRoomTable,
+  setTotalPrice,
+  setReceipt,
 } = formSlice.actions;
 export default formSlice.reducer;

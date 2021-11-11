@@ -9,6 +9,9 @@ import { setForm, setPriceTable } from "./store/form";
 import { Header } from "./components/Header";
 import { Content } from "./components/Content";
 import { Agreement } from "./components/Agreement";
+import { Submit } from "./components/Submit";
+import { Receipt } from "./components/Receipt";
+import { Footer } from "./components/Footer";
 
 function App() {
   // const { token } = useSelector((state) => state.filemaker);
@@ -51,7 +54,7 @@ function App() {
       //  console.log(result)
       // console.log(JSON.stringify(result.data[0].fieldData).replaceAll(/(::)|[(]|[)]/g,"_"));
     })();
-  }, []);
+  }, [dispatch]);
   return (
     <div className="App">
       {loading ? (
@@ -64,6 +67,9 @@ function App() {
       <Header />
       <Content />
       <Agreement />
+      <Receipt />
+      <Submit />
+      <Footer />
       {/* <p>{JSON.stringify(form.priceTable)}</p> */}
     </div>
   );

@@ -47,7 +47,6 @@ export const Traveler = forwardRef(
     });
 
     // console.log(isKid);
-    const [lblKid, setLblKid] = useState(false);
     const [showKidBed, setShowKidBed] = useState(false);
     const [startDate, setStartDate] = useState(undefined);
     const [travelerForm, setTravelerForm] = useState({
@@ -108,7 +107,6 @@ export const Traveler = forwardRef(
       });
       // console.log(priceTable);
       modal ? setShow(true) : setShow(false);
-      if (!isStillHasBed && isAnyKidInRoomWithBed) setLblKid(true);
 
       if (storeForm.form.room[indexNo].traveler) {
         if (
