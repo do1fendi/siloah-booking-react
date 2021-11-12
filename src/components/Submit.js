@@ -3,11 +3,11 @@ import { setTotalPrice } from "../store/form";
 import { findRecord, getToken, setToken } from "../store/filemaker";
 import { useEffect, useState } from "react";
 
-export const Submit = () => {
+export const Submit = ({ setLoadingFromChild }) => {
   const queryParams = new URLSearchParams(window.location.search);
-  const [err, setError] = useState(0);
+  const totalPrice = useSelector((state) => state.form.form.totalPrice);
   const dispatch = useDispatch();
-  const totalPrice = useSelector((state) => {
+  const calculatePrice = useSelector((state) => {
     if (state.form.form.room) {
       if (state.form.form.room[0].traveler) {
         if (state.form.form.room[0].traveler.length >= 1) {
@@ -26,6 +26,7 @@ export const Submit = () => {
       }
     }
   });
+
   // Compare original each type available room with current selected room
   // if any total selected room more than original available room, error is set
   // const originalData = useSelector((state) => state.form.priceTable);
@@ -60,10 +61,14 @@ export const Submit = () => {
   };
 
   useEffect(() => {
-    dispatch(setTotalPrice(totalPrice));
-  }, [totalPrice, dispatch]);
+    calculatePrice
+      ? dispatch(setTotalPrice(calculatePrice))
+      : dispatch(setTotalPrice(0));
+    // dispatch(setTotalPrice(calculatePrice))
+  }, [calculatePrice, dispatch]);
 
   const onSubmit = () => {
+    setLoadingFromChild(true);
     /**  Get latest data from filemaker, then compare currentData with it */
     (async () => {
       //Get Filemaker Session Token
@@ -71,24 +76,39 @@ export const Submit = () => {
       //Save token to store
       dispatch(setToken(res));
       const result = await findRecord(queryParams.get("groupNumber"), res);
-    
+
       const getCurrentData = JSON.parse(
         JSON.stringify(result.data[0].portalData).replaceAll(
           /(::)|[(]|[)]/g,
           "_"
         )
-      )
+      );
       // to be continue, if err true alert error, if err false submit form to filemaker
+      setLoadingFromChild(false);
       console.log(compareData(getCurrentData.priceTable_group));
+      //check if traveler is set using totalPrice is more than 0
+      if (totalPrice === 0) {
+        alert("No Traveler is set");
+      } else if (compareData(getCurrentData.priceTable_group)) {
+        alert(
+          "Room is currently not available, please select another room"
+        );
+      }
+      else{
+        alert("OK")
+      }
     })();
   };
   return (
-    <div className="submit mt-4">
-      <div className="container p-2">
-        <h4>Total Price: {totalPrice ? totalPrice : 0}</h4>
-        <button onClick={() => onSubmit()}></button>
+    <>
+      <div className="submit mt-4">
+        <div className="container p-2">
+          <h4 className="text-wrap">
+            Total Price: {JSON.stringify(totalPrice)}
+          </h4>
+          <button onClick={() => onSubmit()}>Credit</button>
+        </div>
       </div>
-      <p className="text-wrap">{err}</p>
-    </div>
+    </>
   );
 };

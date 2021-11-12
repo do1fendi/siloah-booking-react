@@ -16,15 +16,15 @@ const initialState = {
   },
   roomOccupancyTable: [],
   form: {
+    totalPrice: 0,
     registrar: {
       // country: "Taiwan",
       phoneCode: "+886",
       receiptName: "",
       receiptNo: "",
       receiptNote: "",
-    },
+    },    
     room: [{}],
-    totalPrice: 0,
   },
 };
 

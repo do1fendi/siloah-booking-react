@@ -45,7 +45,7 @@ const Registrar = forwardRef((props, ref) => {
   };
 
   return (
-    <div className="registrar">
+    <div className="registrar" id="registrar">
       <h3 className="text-center mb-4 mt-3">訂購人</h3>
       <Form
         className="row g-3 needs-validation"

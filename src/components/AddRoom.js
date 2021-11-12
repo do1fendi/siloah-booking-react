@@ -27,12 +27,12 @@ export const AddRoom = () => {
   };
   return (
     <div>
-      <div className="d-flex justify-content-between mt-5">
+      <div className="d-flex justify-content-between mt-4 mb-4">
         <h3>
           Rooms <span className="fs-6">Left（{roomLeft}）</span>
         </h3>
-        <button className="btn btn-primary" onClick={handleAddRoom}>
-          加房間
+        <button className="btn btn-primary px-5" onClick={handleAddRoom}>        
+        加房間 
         </button>
       </div>
     </div>

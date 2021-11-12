@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 export const TravelerTable = ({ indexNo }) => {
   const travelers = useSelector((state) => state.form.form.room[indexNo].traveler);
   return (
-    <div className="mt-4 mb-5">
+    <div className="mt-4 mb-5 px-4">
       {travelers && travelers.length > 0 ? (
         <div>
-          <Table striped hover size="sm">
-            <thead>
+          <Table size="sm">
+            <thead className="thead-light">
               <tr>
                 <th className="text-center">#</th>
                 <th>Name</th>

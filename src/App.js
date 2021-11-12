@@ -1,7 +1,4 @@
 import { useDispatch } from "react-redux";
-// import Button from "react-bootstrap/Button";
-// import Row from "react-bootstrap/Row";
-// import Col from "react-bootstrap/Col";
 import "./App.css";
 import { useEffect, useState } from "react";
 import { findRecord, getToken, setToken } from "./store/filemaker";
@@ -12,6 +9,7 @@ import { Agreement } from "./components/Agreement";
 import { Submit } from "./components/Submit";
 import { Receipt } from "./components/Receipt";
 import { Footer } from "./components/Footer";
+import { Loader } from "./components/Loader";
 
 function App() {
   // const { token } = useSelector((state) => state.filemaker);
@@ -55,21 +53,26 @@ function App() {
       // console.log(JSON.stringify(result.data[0].fieldData).replaceAll(/(::)|[(]|[)]/g,"_"));
     })();
   }, [dispatch]);
+
+  const setLoadingFromChild = (isTrue) => {
+    setloading(isTrue)
+  }
   return (
     <div className="App">
-      {loading ? (
+      <Loader loading={loading} />
+      <Header />
+      <Content />
+      <Agreement />
+      <Receipt />
+      <Submit setLoadingFromChild={setLoadingFromChild}/>
+      <Footer />
+      {/* {loading ? (
         <div className="loader-wrapper">
           <div className="loader"></div>
         </div>
       ) : (
         ""
-      )}
-      <Header />
-      <Content />
-      <Agreement />
-      <Receipt />
-      <Submit />
-      <Footer />
+      )} */}
       {/* <p>{JSON.stringify(form.priceTable)}</p> */}
     </div>
   );
