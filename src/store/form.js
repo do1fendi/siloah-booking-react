@@ -5,6 +5,7 @@ const initialState = {
   departureDate: "",
   availableSeat: 0,
   tourSubject: "",
+  deposit: 0,
   priceTable: [
     { TOURPACKAGE_GROUPPRICE_roomAvailable: 0 },
     { TOURPACKAGE_GROUPPRICE_roomAvailable: 0 },
@@ -17,13 +18,14 @@ const initialState = {
   roomOccupancyTable: [],
   form: {
     totalPrice: 0,
+    totalDeposit: 0,
     registrar: {
       // country: "Taiwan",
       phoneCode: "+886",
       receiptName: "",
       receiptNo: "",
       receiptNote: "",
-    },    
+    },
     room: [{}],
   },
 };
@@ -38,6 +40,7 @@ export const formSlice = createSlice({
         departureDate,
         seat_available,
         tourSubject,
+        deposit,
         TOURPACKAGE_SALSEPRICE_D_StandardPrice_1_,
         TOURPACKAGE_SALSEPRICE_D_StandardPrice_2_,
         TOURPACKAGE_SALSEPRICE_D_StandardPrice_3_,
@@ -46,6 +49,7 @@ export const formSlice = createSlice({
       state.departureDate = departureDate;
       state.availableSeat = seat_available;
       state.tourSubject = tourSubject;
+      state.deposit = deposit;
       state.price.adult = TOURPACKAGE_SALSEPRICE_D_StandardPrice_1_;
       state.price.kid = TOURPACKAGE_SALSEPRICE_D_StandardPrice_2_;
       state.price.infant = TOURPACKAGE_SALSEPRICE_D_StandardPrice_3_;
@@ -156,6 +160,9 @@ export const formSlice = createSlice({
     setTotalPrice: (state, action) => {
       state.form.totalPrice = action.payload;
     },
+    setTotalDeposit: (state, action) => {
+      state.form.totalDeposit = action.payload;
+    },
     setReceipt: (state, action) => {
       const { input, value } = action.payload;
       switch (input) {
@@ -186,6 +193,7 @@ export const {
   setRoom,
   updateRoomTable,
   setTotalPrice,
+  setTotalDeposit,
   setReceipt,
 } = formSlice.actions;
 export default formSlice.reducer;

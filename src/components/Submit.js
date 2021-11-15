@@ -1,12 +1,48 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setTotalPrice } from "../store/form";
+import { setTotalPrice, setTotalDeposit } from "../store/form";
 import { findRecord, getToken, setToken } from "../store/filemaker";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Form } from "react-bootstrap";
 
 export const Submit = ({ setLoadingFromChild }) => {
+  const [validated, setValidated] = useState(false);
+  const formRef = useRef(null);
   const queryParams = new URLSearchParams(window.location.search);
   const totalPrice = useSelector((state) => state.form.form.totalPrice);
+  const totalDeposit = useSelector((state) => state.form.form.totalDeposit);
   const dispatch = useDispatch();
+  // infant use infant price as the deposit, other use default deposit
+  const defaultDeposit = useSelector((state) => state.form.deposit);
+  const infantDeposit = useSelector((state) => {
+    if (state.form.priceTable[0])
+      return state.form.priceTable[0].TOURPACKAGE_GROUPPRICE_infant;
+  });
+
+  const depositList = useSelector((state) => {
+    let totalPeople = 0;
+    let totalInfant = 0;
+    if (state.form.form.room) {
+      state.form.form.room.forEach((room) => {
+        if (room.traveler) {
+          room.traveler.forEach((traveler) => {
+            if (traveler.status === "adult") totalPeople++;
+            if (traveler.status === "child") totalPeople++;
+            if (traveler.status === "kid") totalPeople++;
+            if (traveler.status === "infant") totalInfant++;
+          });
+        }
+      });
+    }
+    return {
+      people: totalPeople,
+      infant: totalInfant,
+    };
+  });
+
+  const calculateDeposit = (dt) => {
+    const totalDeposit = dt.people * defaultDeposit + dt.infant * infantDeposit;
+    return totalDeposit;
+  };
   const calculatePrice = useSelector((state) => {
     if (state.form.form.room) {
       if (state.form.form.room[0].traveler) {
@@ -64,10 +100,12 @@ export const Submit = ({ setLoadingFromChild }) => {
     calculatePrice
       ? dispatch(setTotalPrice(calculatePrice))
       : dispatch(setTotalPrice(0));
-    // dispatch(setTotalPrice(calculatePrice))
-  }, [calculatePrice, dispatch]);
+    calculateDeposit
+      ? dispatch(setTotalDeposit(calculateDeposit(depositList)))
+      : dispatch(setTotalDeposit(0));
+  }, [calculatePrice, dispatch, calculateDeposit, depositList]);
 
-  const onSubmit = () => {
+  const onSubmit = (payment) => {
     setLoadingFromChild(true);
     /**  Get latest data from filemaker, then compare currentData with it */
     (async () => {
@@ -90,23 +128,123 @@ export const Submit = ({ setLoadingFromChild }) => {
       if (totalPrice === 0) {
         alert("No Traveler is set");
       } else if (compareData(getCurrentData.priceTable_group)) {
-        alert(
-          "Room is currently not available, please select another room"
-        );
-      }
-      else{
-        alert("OK")
+        alert("Room is currently not available, please select another room");
+      } else {
+        triggerHandleSubmit();
+        
       }
     })();
   };
+  const handleSubmit = (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    else {
+      alert("ok");
+    }
+
+    setValidated(true);
+  };
+
+  const triggerHandleSubmit = () => {
+    formRef.current.dispatchEvent(
+      new Event("submit", { bubbles: true, cancelable: true })
+    );
+  };
   return (
     <>
-      <div className="submit mt-4">
-        <div className="container p-2">
-          <h4 className="text-wrap">
+      <div className="submit mt-4 pt-4">
+        <div className="container p-2 text-center">
+          {/* <h4 className="text-wrap">
             Total Price: {JSON.stringify(totalPrice)}
           </h4>
-          <button onClick={() => onSubmit()}>Credit</button>
+          <h4 className="text-wrap">
+            Total Deposit: {JSON.stringify(totalDeposit)}
+          </h4> */}
+          {depositList && depositList.people > 0 ? (
+            <p>
+              訂金 (
+              {depositList.people > 0 ? (
+                <span>
+                  {" "}
+                  {depositList.people} 人 *{" "}
+                  {defaultDeposit
+                    .toString()
+                    .replace(/\d{1,3}(?=(\d{3})+(?!\d))/g, "$&,")}
+                </span>
+              ) : (
+                ""
+              )}
+              {depositList.infant > 0 ? (
+                <span>
+                  , {depositList.infant} 嬰兒 *{" "}
+                  {infantDeposit
+                    .toString()
+                    .replace(/\d{1,3}(?=(\d{3})+(?!\d))/g, "$&,")}{" "}
+                </span>
+              ) : (
+                ""
+              )}{" "}
+              )
+            </p>
+          ) : (
+            ""
+          )}
+          <Form
+            noValidate
+            validated={validated}
+            onSubmit={handleSubmit}
+            ref={formRef}
+          >
+            {["radio"].map((type) => (
+              <div key={`inline-${type}`} className="mb-3">
+                <Form.Check
+                  inline
+                  label={`全額付款 (台幣 $${totalPrice
+                    .toString()
+                    .replace(/\d{1,3}(?=(\d{3})+(?!\d))/g, "$&,")})`}
+                  name="group1"
+                  type={type}
+                  id={`inline-${type}-1`}
+                />
+                <Form.Check
+                  inline
+                  defaultChecked
+                  label={`先付訂金 (台幣 $${totalDeposit
+                    .toString()
+                    .replace(/\d{1,3}(?=(\d{3})+(?!\d))/g, "$&,")})`}
+                  name="group1"
+                  type={type}
+                  id={`inline-${type}-2`}
+                />
+              </div>
+            ))}
+            <Form.Group className="mb-3">
+              <Form.Check
+                required
+                inline
+                label="* 我已閱讀上述報名須知及定型化契約，並同意接受其內容"
+                feedback="You must agree before submitting."
+                feedbackType="invalid"
+              />
+            </Form.Group>
+          </Form>
+          <div className="text-center">
+            <button
+              className="btn btn-warning m-1 btnPayment fw-bold"
+              onClick={() => onSubmit("credit")}
+            >
+              線上刷卡
+            </button>
+            <button
+              className="btn btn-warning m-1 btnPayment fw-bold"
+              onClick={() => onSubmit("atm")}
+            >
+              匯款
+            </button>
+          </div>
         </div>
       </div>
     </>

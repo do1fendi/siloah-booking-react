@@ -18,7 +18,7 @@ export const Content = () => {
         <Room key={index} indexNo={index} checkRegistrarForm={checkRegistrarForm} />
       ))}
       <AddRoom />
-      {/* <p className="text-wrap text-break">{JSON.stringify(form)}</p> */}
+      <p className="text-wrap text-break">{JSON.stringify(form)}</p>
     </div>
   );
 };

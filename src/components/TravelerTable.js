@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 export const TravelerTable = ({ indexNo }) => {
   const travelers = useSelector((state) => state.form.form.room[indexNo].traveler);
   return (
-    <div className="mt-4 mb-5 px-4">
+    <div className="mt-4 mb-5 px-3">
       {travelers && travelers.length > 0 ? (
         <div>
           <Table size="sm">

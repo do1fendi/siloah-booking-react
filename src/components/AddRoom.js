@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 
 export const AddRoom = () => {
   const [roomLeft, setRoomLeft] = useState(0);
+  const trevelerPrevRoom = useSelector((state) => state.form.form.room);
   const availableRoom = useSelector((state) => {
     const currPriceTable = state.form.priceTable;
     const x = currPriceTable.reduce(
@@ -18,11 +19,19 @@ export const AddRoom = () => {
     setRoomLeft(availableRoom - 1);
   }, [availableRoom]);
   const handleAddRoom = () => {
-    if (roomLeft > 0) {
+    // check if previous room has traveler, if not set, cannot add room
+    let ifPrevRoomHasTraveler = false;
+    if (trevelerPrevRoom[trevelerPrevRoom.length - 1].traveler) {
+      if (trevelerPrevRoom[trevelerPrevRoom.length - 1].traveler.length > 0)
+        ifPrevRoomHasTraveler = true;
+    }
+    if (roomLeft === 0) {
+      alert("No more available room");
+    } else if (!ifPrevRoomHasTraveler) {
+      alert("Please set traveler on previous room");
+    } else {
       setRoomLeft(roomLeft - 1);
       dispatch(setRoom());
-    } else {
-      alert("No more available room");
     }
   };
   return (
@@ -31,8 +40,8 @@ export const AddRoom = () => {
         <h3>
           Rooms <span className="fs-6">Left（{roomLeft}）</span>
         </h3>
-        <button className="btn btn-primary px-5" onClick={handleAddRoom}>        
-        加房間 
+        <button className="btn btn-primary px-5" onClick={handleAddRoom}>
+          加房間
         </button>
       </div>
     </div>

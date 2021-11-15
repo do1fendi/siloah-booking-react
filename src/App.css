@@ -123,6 +123,9 @@ body {
   background: #313232;
   color: #ffffff;
 }
+.was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label{
+  color: #ffffff;
+}
 
 .accordion-button:not(.collapsed) {
   color: #ffffff;
@@ -132,4 +135,9 @@ body {
 a {
   text-decoration: none;
   color: #009e96;
+}
+
+.btnPayment{
+  width: 170px;
+  
 }
