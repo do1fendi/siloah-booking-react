@@ -6,6 +6,7 @@ import { setTraveler } from "../store/form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ageCalculate } from "../store/ageCalculate";
+import * as Icon from "react-bootstrap-icons"
 
 export const Traveler = forwardRef(
   (
@@ -396,7 +397,7 @@ export const Traveler = forwardRef(
               </div> */}
                 <div className="col-6 col-md-6">
                   <label htmlFor="validationCustom02" className="form-label">
-                    Date of Birth
+                    生日/ Date of Birth
                   </label>
                   <DatePicker
                     className="form-control shadow-sm"                    
@@ -417,18 +418,19 @@ export const Traveler = forwardRef(
                           justifyContent: "center",
                         }}
                       >
-                        {/* <button
+                        <button
                         onClick={decreaseMonth}
                         disabled={prevMonthButtonDisabled}
+                        className="btn px-1"
                       >
-                        {"<"}
-                      </button> */}
+                        {<Icon.ArrowLeftCircle color={'white'} size={24} />}
+                      </button>
                         <select
                           value={date.getFullYear()}
                           onChange={({ target: { value } }) =>
                             changeYear(value)
                           }
-                          className="rounded p-1 px-2"
+                          className="rounded p-1 px-3"
                         >
                           {years.map((option) => (
                             <option key={option} value={option}>
@@ -451,12 +453,13 @@ export const Traveler = forwardRef(
                           ))}
                         </select>
 
-                        {/* <button
+                        <button
                         onClick={increaseMonth}
                         disabled={nextMonthButtonDisabled}
+                        className="btn px-1"
                       >
-                        {">"}
-                      </button> */}
+                        {<Icon.ArrowRightCircle color={'white'} size={24} />}
+                      </button>
                       </div>
                     )}
                     dateFormat="MM/dd/yyyy"

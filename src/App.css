@@ -122,6 +122,27 @@ body {
 .input-group {
   z-index: 1;
 }
+.react-datepicker__day {
+  border: solid thin #01c0b6;
+  border-radius: 5px;
+  font-size: 1rem !important;
+}
+.react-datepicker__day--keyboard-selected {
+  background-color: #009e96 !important;
+}
+.react-datepicker__header {
+  background-color: #009e96 !important;
+}
+.react-datepicker__day-name {
+  color: #ffffff !important;
+  line-height: 2rem !important;
+}
+.react-datepicker__day--disabled {
+  border: none;
+}
+.react-datepicker__month{
+  min-height: 236px !important;
+}
 
 /** Submit */
 .submit,
