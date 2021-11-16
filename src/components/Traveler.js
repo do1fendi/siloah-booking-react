@@ -399,7 +399,7 @@ export const Traveler = forwardRef(
                     Date of Birth
                   </label>
                   <DatePicker
-                    className="form-control shadow-sm"
+                    className="form-control shadow-sm"                    
                     renderCustomHeader={({
                       date,
                       changeYear,
@@ -411,7 +411,8 @@ export const Traveler = forwardRef(
                     }) => (
                       <div
                         style={{
-                          margin: 10,
+                          margin: 2,
+                          gap:5,
                           display: "flex",
                           justifyContent: "center",
                         }}
@@ -427,7 +428,7 @@ export const Traveler = forwardRef(
                           onChange={({ target: { value } }) =>
                             changeYear(value)
                           }
-                          className="rounded"
+                          className="rounded p-1 px-2"
                         >
                           {years.map((option) => (
                             <option key={option} value={option}>
@@ -441,7 +442,7 @@ export const Traveler = forwardRef(
                           onChange={({ target: { value } }) =>
                             changeMonth(months.indexOf(value))
                           }
-                          className="rounded ms-2"
+                          className="rounded"
                         >
                           {months.map((option) => (
                             <option key={option} value={option}>
@@ -463,6 +464,7 @@ export const Traveler = forwardRef(
                     maxDate={new Date() - 1}
                     required
                     onChange={(e) => onChangeInput("dob", e)}
+                    withPortal
                   />
                 </div>
                 {showKidBed ? (
