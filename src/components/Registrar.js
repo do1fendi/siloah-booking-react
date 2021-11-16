@@ -46,7 +46,7 @@ const Registrar = forwardRef((props, ref) => {
 
   return (
     <div className="registrar">
-      <h3 className="text-center mb-4 mt-3">訂購人</h3>
+      <h3 className="fw-bold text-center mb-4 mt-3">訂購人</h3>
       <Form
         className="row g-3 needs-validation"
         id="registrarId"
@@ -55,7 +55,7 @@ const Registrar = forwardRef((props, ref) => {
         onSubmit={handleAddRoom}
         ref={registrarFormRef}
       >
-        <div className="col-md-6">
+        <div className="col-6 col-md-6">
           <label htmlFor="validationCustom02" className="form-label">
             姓氏/ Last name
           </label>
@@ -67,7 +67,7 @@ const Registrar = forwardRef((props, ref) => {
             required
           />
         </div>
-        <div className="col-md-6">
+        <div className="col-6 col-md-6">
           <label htmlFor="validationCustom01" className="form-label">
             名字/ First name
           </label>

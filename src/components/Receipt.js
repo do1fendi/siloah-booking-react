@@ -7,7 +7,7 @@ export const Receipt = () => {
     dispatch(setReceipt({ input: input, value: value }));
   };
   return (
-    <div className="container mt-3">
+    <div className="receipt">
       <Accordion>
         <Accordion.Item eventKey="0">
           <Accordion.Header>填寫代收轉付收據</Accordion.Header>

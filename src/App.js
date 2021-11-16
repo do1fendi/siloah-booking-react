@@ -7,7 +7,6 @@ import { Header } from "./components/Header";
 import { Content } from "./components/Content";
 import { Agreement } from "./components/Agreement";
 import { Submit } from "./components/Submit";
-import { Receipt } from "./components/Receipt";
 import { Footer } from "./components/Footer";
 import { Loader } from "./components/Loader";
 
@@ -62,7 +61,7 @@ function App() {
       <Loader loading={loading} />
       <Header />
       <Content />
-      <Receipt />
+      
       <Agreement />
       <Submit setLoadingFromChild={setLoadingFromChild}/>
       <Footer />

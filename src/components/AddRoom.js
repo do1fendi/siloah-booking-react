@@ -35,7 +35,7 @@ export const AddRoom = () => {
     }
   };
   return (
-    <div>
+    <div className="addRoom">
       <div className="d-flex justify-content-between mt-4 mb-4">
         <h3>
           Rooms <span className="fs-6">Left（{roomLeft}）</span>

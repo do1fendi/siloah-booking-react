@@ -468,7 +468,7 @@ export const Traveler = forwardRef(
                   />
                 </div>
                 {showKidBed ? (
-                  <div className="col-6 col-md-12">
+                  <div className="col-md-12">
                      <label
                         htmlFor="validationCustom02"
                         className="form-label"
@@ -491,7 +491,7 @@ export const Traveler = forwardRef(
                   ""
                 )}
 
-                <div className="col-6 col-md-12">
+                <div className="col-md-12">
                   <label htmlFor="validationCustom02" className="form-label">
                     身份證/ Id
                   </label>

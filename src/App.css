@@ -82,7 +82,7 @@
 
 .roomBox {
   border: thin solid;
-  border-color: #fdbf076b;
+  border-color: #009e96;
   /* box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset !important; */
 }
 
@@ -95,14 +95,20 @@ body {
 
 /** Registrar Form */
 .registrar,
-.traveler {
-  padding-left: 200px;
-  padding-right: 200px;
+.traveler,
+.roomBox,
+.addRoom,
+.receipt {
+  margin-left: 200px;
+  margin-right: 200px;
 }
 @media only screen and (max-width: 768px) {
   .registrar,
-  .traveler {
-    padding: 0px;
+  .traveler,
+  .roomBox,
+  .addRoom,
+  .receipt {
+    margin: 0px;
   }
 }
 
@@ -123,7 +129,8 @@ body {
   background: #313232;
   color: #ffffff;
 }
-.was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label{
+.was-validated .form-check-input:valid ~ .form-check-label,
+.form-check-input.is-valid ~ .form-check-label {
   color: #ffffff;
 }
 
@@ -137,7 +144,6 @@ a {
   color: #009e96;
 }
 
-.btnPayment{
+.btnPayment {
   width: 170px;
-  
 }
