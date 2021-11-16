@@ -6,7 +6,7 @@ import { setTraveler } from "../store/form";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ageCalculate } from "../store/ageCalculate";
-import * as Icon from "react-bootstrap-icons"
+import * as Icon from "react-bootstrap-icons";
 
 export const Traveler = forwardRef(
   (
@@ -277,6 +277,9 @@ export const Traveler = forwardRef(
         mobile: storeForm.form.registrar.mobile,
       });
     };
+    const disableKeyboard = (e) => {
+      e.preventDefault();
+    };
 
     return (
       <div className="traveler">
@@ -400,7 +403,7 @@ export const Traveler = forwardRef(
                     生日/ Date of Birth
                   </label>
                   <DatePicker
-                    className="form-control shadow-sm"                    
+                    className="form-control shadow-sm"
                     renderCustomHeader={({
                       date,
                       changeYear,
@@ -413,18 +416,18 @@ export const Traveler = forwardRef(
                       <div
                         style={{
                           margin: 2,
-                          gap:5,
+                          gap: 5,
                           display: "flex",
                           justifyContent: "center",
                         }}
                       >
                         <button
-                        onClick={decreaseMonth}
-                        disabled={prevMonthButtonDisabled}
-                        className="btn px-1"
-                      >
-                        {<Icon.ArrowLeftCircle color={'white'} size={24} />}
-                      </button>
+                          onClick={decreaseMonth}
+                          disabled={prevMonthButtonDisabled}
+                          className="btn px-1"
+                        >
+                          {<Icon.ArrowLeftCircle color={"white"} size={24} />}
+                        </button>
                         <select
                           value={date.getFullYear()}
                           onChange={({ target: { value } }) =>
@@ -454,12 +457,12 @@ export const Traveler = forwardRef(
                         </select>
 
                         <button
-                        onClick={increaseMonth}
-                        disabled={nextMonthButtonDisabled}
-                        className="btn px-1"
-                      >
-                        {<Icon.ArrowRightCircle color={'white'} size={24} />}
-                      </button>
+                          onClick={increaseMonth}
+                          disabled={nextMonthButtonDisabled}
+                          className="btn px-1"
+                        >
+                          {<Icon.ArrowRightCircle color={"white"} size={24} />}
+                        </button>
                       </div>
                     )}
                     dateFormat="MM/dd/yyyy"
@@ -467,19 +470,17 @@ export const Traveler = forwardRef(
                     maxDate={new Date() - 1}
                     required
                     onChange={(e) => onChangeInput("dob", e)}
-                    onChangeRaw={(e) => e.preventDefault()}
+                    onKeyDown={e => e.preventDefault()}
+                    readonly
                     withPortal
                   />
                 </div>
                 {showKidBed ? (
                   <div className="col-md-12">
-                     <label
-                        htmlFor="validationCustom02"
-                        className="form-label"
-                      >
-                        Set Bed
-                      </label>
-                    <div className="form-check">                     
+                    <label htmlFor="validationCustom02" className="form-label">
+                      Set Bed
+                    </label>
+                    <div className="form-check">
                       <input
                         className="form-check-input"
                         type="checkbox"
@@ -550,7 +551,7 @@ export const Traveler = forwardRef(
                     />
                   </div>
                 </div>
-               
+
                 <h4>Price: {travelerForm.price} NTD</h4>
                 <div className="d-flex gap-2 justify-content-end">
                   <Button variant="secondary" onClick={handleClose}>

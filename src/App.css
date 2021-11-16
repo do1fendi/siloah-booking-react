@@ -110,6 +110,17 @@ body {
   .receipt {
     margin: 0px;
   }
+  /* react-datePicker */
+  .react-datepicker__portal .react-datepicker__day-name{
+    width: 2.8rem !important;
+  }
+  .react-datepicker__day{
+    width: 2.8rem !important;
+    line-height: 2.8rem !important;
+  }
+  .react-datepicker{
+    font-size: 1.2rem !important;
+  }
 }
 
 /** react-datePicker */
@@ -135,13 +146,18 @@ body {
 }
 .react-datepicker__day-name {
   color: #ffffff !important;
-  line-height: 2rem !important;
 }
 .react-datepicker__day--disabled {
   border: none;
 }
 .react-datepicker__month{
   min-height: 236px !important;
+}
+.react-datepicker__portal{
+  width: 100%;
+}
+.react-datepicker{
+  font-size: 1rem !important;
 }
 
 /** Submit */
