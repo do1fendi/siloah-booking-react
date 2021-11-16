@@ -317,7 +317,7 @@ export const Traveler = forwardRef(
                 ref={formRef}
                 onSubmit={handleTraveler}
               >
-                <div className="col-md-4">
+                <div className="col-6 col-md-4">
                   <label htmlFor="validationCustom02" className="form-label">
                     姓氏/ Last name
                   </label>
@@ -330,7 +330,7 @@ export const Traveler = forwardRef(
                     value={travelerForm.lastName}
                   />
                 </div>
-                <div className="col-md-4">
+                <div className="col-6 col-md-4">
                   <label htmlFor="validationCustom01" className="form-label">
                     名字/ First name
                   </label>
