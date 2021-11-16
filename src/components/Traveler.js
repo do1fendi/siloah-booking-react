@@ -317,7 +317,7 @@ export const Traveler = forwardRef(
                 ref={formRef}
                 onSubmit={handleTraveler}
               >
-                <div className="col-6 col-md-4">
+                <div className="col-6 col-md-6">
                   <label htmlFor="validationCustom02" className="form-label">
                     姓氏/ Last name
                   </label>
@@ -330,7 +330,7 @@ export const Traveler = forwardRef(
                     value={travelerForm.lastName}
                   />
                 </div>
-                <div className="col-6 col-md-4">
+                <div className="col-6 col-md-6">
                   <label htmlFor="validationCustom01" className="form-label">
                     名字/ First name
                   </label>
@@ -343,7 +343,7 @@ export const Traveler = forwardRef(
                     value={travelerForm.firstName}
                   />
                 </div>
-                <div className="col-6 col-md-4">
+                <div className="col-6 col-md-6">
                   <label htmlFor="validationCustom01" className="form-label">
                     生別/ Gender
                   </label>
@@ -466,7 +466,7 @@ export const Traveler = forwardRef(
                   />
                 </div>
                 {showKidBed ? (
-                  <div className="col-6">
+                  <div className="col-6 col-md-12">
                      <label
                         htmlFor="validationCustom02"
                         className="form-label"
@@ -489,7 +489,7 @@ export const Traveler = forwardRef(
                   ""
                 )}
 
-                <div className="col-md-6">
+                <div className="col-6 col-md-12">
                   <label htmlFor="validationCustom02" className="form-label">
                     身份證/ Id
                   </label>
@@ -501,7 +501,9 @@ export const Traveler = forwardRef(
                     required
                   />
                 </div>
-                <div className="border-top"></div>
+                <div className="border-top pt-2">
+                  <Badge>Optional</Badge>
+                </div>
                 <div className="col-md-12">
                   <label htmlFor="validationCustom02" className="form-label">
                     其他特殊要求/ Remark
@@ -542,7 +544,6 @@ export const Traveler = forwardRef(
                     />
                   </div>
                 </div>
-
                
                 <h3>Price: {travelerForm.price} NTD</h3>
                 <div className="d-flex gap-2 justify-content-end">
