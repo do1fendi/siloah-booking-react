@@ -62,8 +62,8 @@ function App() {
       <Loader loading={loading} />
       <Header />
       <Content />
-      <Agreement />
       <Receipt />
+      <Agreement />
       <Submit setLoadingFromChild={setLoadingFromChild}/>
       <Footer />
       {/* {loading ? (

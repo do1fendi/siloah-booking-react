@@ -226,7 +226,7 @@ export const Traveler = forwardRef(
           } else if (isKid && youngChild && !isStillHasBed && isAnyKidInRoomWithBed) {
             alert("Can only add kid with age < 7 years old");
             setStartDate(undefined);
-          } */else {            
+          } */ else {
             // Set Price'
             let price = 0;
             switch (status) {
@@ -245,7 +245,12 @@ export const Traveler = forwardRef(
               default:
                 break;
             }
-            setTravelerForm({ ...travelerForm,dob: combined, status: status, price: price });
+            setTravelerForm({
+              ...travelerForm,
+              dob: combined,
+              status: status,
+              price: price,
+            });
           }
 
           break;
@@ -338,7 +343,7 @@ export const Traveler = forwardRef(
                     value={travelerForm.firstName}
                   />
                 </div>
-                <div className="col-md-4">
+                <div className="col-6 col-md-4">
                   <label htmlFor="validationCustom01" className="form-label">
                     生別/ Gender
                   </label>
@@ -375,38 +380,7 @@ export const Traveler = forwardRef(
                   })}
                 </select>
               </div> */}
-                {}
-                <div className="col-sm-12">
-                  <label htmlFor="validationCustom04" className="form-label">
-                    聯絡電話/ Contact Number
-                  </label>
-                  <div className="input-group">
-                    {/* <span className="input-group-text" id="basic-addon1">
-                    {travelerForm.phoneCode}
-                  </span> */}
-                    <input
-                      type="text"
-                      className="form-control shadow-sm w-25 text-center"
-                      aria-label="phoneNumber"
-                      aria-describedby="basic-addon1"
-                      onChange={(e) =>
-                        onChangeInput("phoneCode", e.target.value)
-                      }
-                      required
-                      defaultValue="+886"
-                      // value={storeForm.registrar.phoneCode}
-                    />
-                    <input
-                      type="number"
-                      className="form-control shadow-sm w-75"
-                      aria-label="phoneNumber"
-                      aria-describedby="basic-addon1"
-                      onChange={(e) => onChangeInput("mobile", e.target.value)}
-                      required
-                      value={travelerForm.mobile}
-                    />
-                  </div>
-                </div>
+
                 {/* <div className="col-md-6">
                 <label htmlFor="validationCustom02" className="form-label">
                   Email
@@ -420,7 +394,7 @@ export const Traveler = forwardRef(
                   value={travelerForm.email}
                 />
               </div> */}
-                <div className="col-md-6">
+                <div className="col-6 col-md-6">
                   <label htmlFor="validationCustom02" className="form-label">
                     Date of Birth
                   </label>
@@ -491,22 +465,15 @@ export const Traveler = forwardRef(
                     onChange={(e) => onChangeInput("dob", e)}
                   />
                 </div>
-
-                <div className="col-md-6">
-                  <label htmlFor="validationCustom02" className="form-label">
-                    身份證/ Id
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control shadow-sm"
-                    id="validationCustom02"
-                    onChange={(e) => onChangeInput("citizenId", e.target.value)}
-                    required
-                  />
-                </div>
                 {showKidBed ? (
-                  <div className="col-12">
-                    <div className="form-check">
+                  <div className="col-6">
+                     <label
+                        htmlFor="validationCustom02"
+                        className="form-label"
+                      >
+                        Set Bed
+                      </label>
+                    <div className="form-check">                     
                       <input
                         className="form-check-input"
                         type="checkbox"
@@ -522,6 +489,19 @@ export const Traveler = forwardRef(
                   ""
                 )}
 
+                <div className="col-md-6">
+                  <label htmlFor="validationCustom02" className="form-label">
+                    身份證/ Id
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control shadow-sm"
+                    id="validationCustom02"
+                    onChange={(e) => onChangeInput("citizenId", e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="border-top"></div>
                 <div className="col-md-12">
                   <label htmlFor="validationCustom02" className="form-label">
                     其他特殊要求/ Remark
@@ -533,6 +513,37 @@ export const Traveler = forwardRef(
                     onChange={(e) => onChangeInput("remark", e.target.value)}
                   />
                 </div>
+                <div className="col-sm-12">
+                  <label htmlFor="validationCustom04" className="form-label">
+                    聯絡電話/ Contact Number
+                  </label>
+                  <div className="input-group">
+                    {/* <span className="input-group-text" id="basic-addon1">
+                    {travelerForm.phoneCode}
+                  </span> */}
+                    <input
+                      type="text"
+                      className="form-control shadow-sm w-25 text-center"
+                      aria-label="phoneNumber"
+                      aria-describedby="basic-addon1"
+                      onChange={(e) =>
+                        onChangeInput("phoneCode", e.target.value)
+                      }
+                      defaultValue="+886"
+                      // value={storeForm.registrar.phoneCode}
+                    />
+                    <input
+                      type="number"
+                      className="form-control shadow-sm w-75"
+                      aria-label="phoneNumber"
+                      aria-describedby="basic-addon1"
+                      onChange={(e) => onChangeInput("mobile", e.target.value)}
+                      value={travelerForm.mobile}
+                    />
+                  </div>
+                </div>
+
+               
                 <h3>Price: {travelerForm.price} NTD</h3>
                 <div className="d-flex gap-2 justify-content-end">
                   <Button variant="secondary" onClick={handleClose}>

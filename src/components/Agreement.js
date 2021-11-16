@@ -2,7 +2,7 @@ import { Snow2 } from "react-bootstrap-icons";
 
 export const Agreement = () => {
   return (
-    <div className="container">
+    <div className="container mt-4">
       <span className="badge bg-green fs-5 fst-normal mt-2">
         <Snow2 size={24} /> 報名須知
       </span>
