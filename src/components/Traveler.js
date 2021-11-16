@@ -467,6 +467,7 @@ export const Traveler = forwardRef(
                     maxDate={new Date() - 1}
                     required
                     onChange={(e) => onChangeInput("dob", e)}
+                    onChangeRaw={(e) => e.preventDefault()}
                     withPortal
                   />
                 </div>
