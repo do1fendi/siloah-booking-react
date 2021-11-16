@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/siloah-booking-react/static/css/main.3d021cd5.chunk.css",
-    "main.js": "/siloah-booking-react/static/js/main.f5828b2b.chunk.js",
-    "main.js.map": "/siloah-booking-react/static/js/main.f5828b2b.chunk.js.map",
+    "main.css": "/siloah-booking-react/static/css/main.3d4e6d30.chunk.css",
+    "main.js": "/siloah-booking-react/static/js/main.6b9c7f1c.chunk.js",
+    "main.js.map": "/siloah-booking-react/static/js/main.6b9c7f1c.chunk.js.map",
     "runtime-main.js": "/siloah-booking-react/static/js/runtime-main.1f2ce0f3.js",
     "runtime-main.js.map": "/siloah-booking-react/static/js/runtime-main.1f2ce0f3.js.map",
     "static/css/2.e8051837.chunk.css": "/siloah-booking-react/static/css/2.e8051837.chunk.css",
@@ -12,14 +12,14 @@
     "static/js/3.a80e20f2.chunk.js.map": "/siloah-booking-react/static/js/3.a80e20f2.chunk.js.map",
     "index.html": "/siloah-booking-react/index.html",
     "static/css/2.e8051837.chunk.css.map": "/siloah-booking-react/static/css/2.e8051837.chunk.css.map",
-    "static/css/main.3d021cd5.chunk.css.map": "/siloah-booking-react/static/css/main.3d021cd5.chunk.css.map",
+    "static/css/main.3d4e6d30.chunk.css.map": "/siloah-booking-react/static/css/main.3d4e6d30.chunk.css.map",
     "static/js/2.64ab55cc.chunk.js.LICENSE.txt": "/siloah-booking-react/static/js/2.64ab55cc.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.1f2ce0f3.js",
     "static/css/2.e8051837.chunk.css",
     "static/js/2.64ab55cc.chunk.js",
-    "static/css/main.3d021cd5.chunk.css",
-    "static/js/main.f5828b2b.chunk.js"
+    "static/css/main.3d4e6d30.chunk.css",
+    "static/js/main.6b9c7f1c.chunk.js"
   ]
 }
