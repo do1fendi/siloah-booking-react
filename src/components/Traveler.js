@@ -502,7 +502,7 @@ export const Traveler = forwardRef(
                   />
                 </div>
                 <div className="border-top pt-2">
-                  <Badge>Optional</Badge>
+                  <Badge>選填資料</Badge>
                 </div>
                 <div className="col-md-12">
                   <label htmlFor="validationCustom02" className="form-label">
@@ -545,7 +545,7 @@ export const Traveler = forwardRef(
                   </div>
                 </div>
                
-                <h3>Price: {travelerForm.price} NTD</h3>
+                <h4>Price: {travelerForm.price} NTD</h4>
                 <div className="d-flex gap-2 justify-content-end">
                   <Button variant="secondary" onClick={handleClose}>
                     Cancel
