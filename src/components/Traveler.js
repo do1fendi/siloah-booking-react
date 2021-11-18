@@ -73,18 +73,18 @@ export const Traveler = forwardRef(
       Array.from({ length }, (_, i) => start + i);
     const years = range(1931, new Date().getFullYear() + 1);
     const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      "一月",
+      "二月",
+      "三月",
+      "四月",
+      "五月",
+      "六月",
+      "七月",
+      "八月",
+      "九月",
+      "十月",
+      "十一月",
+      "十二月",
     ];
 
     const handleClose = () => setShow(false);
@@ -254,7 +254,7 @@ export const Traveler = forwardRef(
               price: price,
             });
           }
-          genderRef.current.focus();
+          // genderRef.current.focus();
 
           break;
         case "citizenId":
@@ -278,9 +278,6 @@ export const Traveler = forwardRef(
         phoneCode: storeForm.form.registrar.phoneCode,
         mobile: storeForm.form.registrar.mobile,
       });
-    };
-    const disableKeyboard = (e) => {
-      e.preventDefault();
     };
 
     return (
@@ -360,7 +357,6 @@ export const Traveler = forwardRef(
                     onChange={(e) => onChangeInput("gender", e.target.value)}
                     required
                     value={travelerForm.gender}
-                    ref={genderRef}
                   >
                     <option value="male">男</option>
                     <option value="female">女</option>
@@ -473,9 +469,9 @@ export const Traveler = forwardRef(
                     maxDate={new Date() - 1}
                     required
                     onChange={(e) => onChangeInput("dob", e)}
-                    onKeyDown={(e) => e.preventDefault()}
-                    readonly
                     withPortal
+                    disabledKeyboardNavigation
+                    onFocus={(e) => e.target.blur()}
                   />
                 </div>
                 {showKidBed ? (
@@ -556,7 +552,11 @@ export const Traveler = forwardRef(
                 </div>
                 <h4>Price: {travelerForm.price} NTD</h4>
                 <div className="d-flex gap-2 justify-content-end">
-                  <Button variant="secondary" onClick={handleClose}>
+                  <Button
+                    ref={genderRef}
+                    variant="secondary"
+                    onClick={handleClose}
+                  >
                     Cancel
                   </Button>
                   <Button variant="primary" type="submit">
