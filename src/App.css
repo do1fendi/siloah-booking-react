@@ -113,6 +113,7 @@ body {
   /* react-datePicker */
   .react-datepicker__portal .react-datepicker__day-name{
     width: 2.8rem !important;
+    height: 2.8rem !important;    
   }
   .react-datepicker__day{
     width: 2.8rem !important;
@@ -154,10 +155,22 @@ body {
   min-height: 236px !important;
 }
 .react-datepicker__portal{
+  z-index: 9999;
   width: 100%;
 }
 .react-datepicker{
   font-size: 1rem !important;
+}
+.react-datepicker__day--outside-month {
+  /* color: transparent !important; */
+  pointer-events: none;
+  border:none;
+  color: #ccc !important;
+}
+
+
+.ExampleCustomInput{
+  z-index: 1;
 }
 
 /** Submit */

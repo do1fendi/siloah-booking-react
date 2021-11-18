@@ -28,6 +28,7 @@ export const Traveler = forwardRef(
       (arr) => arr.TOURPACKAGE_GROUPPRICE_roomTypeName === currRoomType
     );
     const formRef = useRef();
+    const genderRef = useRef();
     // check if current room has traveler
     const isTravelerSet = useSelector((state) => {
       if (state.form.form.room[indexNo].traveler) {
@@ -253,6 +254,7 @@ export const Traveler = forwardRef(
               price: price,
             });
           }
+          genderRef.current.focus();
 
           break;
         case "citizenId":
@@ -358,6 +360,7 @@ export const Traveler = forwardRef(
                     onChange={(e) => onChangeInput("gender", e.target.value)}
                     required
                     value={travelerForm.gender}
+                    ref={genderRef}
                   >
                     <option value="male">男</option>
                     <option value="female">女</option>
@@ -470,7 +473,7 @@ export const Traveler = forwardRef(
                     maxDate={new Date() - 1}
                     required
                     onChange={(e) => onChangeInput("dob", e)}
-                    onKeyDown={e => e.preventDefault()}
+                    onKeyDown={(e) => e.preventDefault()}
                     readonly
                     withPortal
                   />
@@ -551,7 +554,6 @@ export const Traveler = forwardRef(
                     />
                   </div>
                 </div>
-
                 <h4>Price: {travelerForm.price} NTD</h4>
                 <div className="d-flex gap-2 justify-content-end">
                   <Button variant="secondary" onClick={handleClose}>

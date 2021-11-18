@@ -21,7 +21,7 @@ export const Content = () => {
       ))}
       <Receipt />
       <AddRoom />
-      {/* <p className="text-wrap text-break">{JSON.stringify(form)}</p> */}
+      <p className="text-wrap text-break">{JSON.stringify(form)}</p>
     </div>
   );
 };
