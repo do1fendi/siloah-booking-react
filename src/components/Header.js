@@ -10,10 +10,10 @@ export const Header = () => {
       <div className="alert alert-primary" role="alert">
         <div className="container">
           <div className="row">
-            <div className="col-6">
+            <div className="col-md-6 col-12 text-center md:text-left">
               <img className="w-50" src={logo} alt="Logo" />
             </div>
-            <div className="col-6 px-0 text-end">{departureDate}</div>
+            <div className="col-md-6 px-0 fs-5 fw-bold text-center md:text-end">出發日： {departureDate}</div>
             {/* <div className="col-6 px-0 text-end">
               Available Seat:
               <span
@@ -28,7 +28,7 @@ export const Header = () => {
                 {availableSeat}
               </span>
             </div> */}
-        <div className="text-center fw-bold fs-5 col-12 mt-3">{tourSubject}</div>
+        <div className="text-center fw-bold fs-5 col-12 sm:mt-3">{tourSubject}</div>
           </div>
         </div>
       </div>
