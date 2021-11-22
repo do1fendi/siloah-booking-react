@@ -203,3 +203,12 @@ a {
 img{
   width: 100%;
 }
+
+.logo{
+  width: 15%;
+}
+@media only screen and (max-width: 768px) {
+  .logo {
+    width: 50%;
+  }
+}
