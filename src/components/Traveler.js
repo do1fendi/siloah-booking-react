@@ -51,20 +51,24 @@ export const Traveler = forwardRef(
     // console.log(isKid);
     const [showKidBed, setShowKidBed] = useState(false);
     const [startDate, setStartDate] = useState(undefined);
+    const [tpPhone, setTpPhone] = useState({
+      phoneCode: "+886",
+      phoneNumber: "",
+    });
     const [travelerForm, setTravelerForm] = useState({
       lastName: "",
       firstName: "",
       gender: "male",
       email: "",
       country: "Taiwan",
-      phoneCode: "+886",
-      mobile: "",
+      phone: "",
       dob: "",
       citizenId: "",
       status: "",
       kidWithBed: false,
       remark: "",
       price: 0,
+      asRegistrar: false,
     });
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
@@ -98,15 +102,16 @@ export const Traveler = forwardRef(
         gender: "male",
         email: "",
         country: "Taiwan",
-        phoneCode: "+886",
-        mobile: "",
+        phone: "",
         citizenId: "",
         dob: "",
         status: "",
         kidWithBed: false,
         remark: "",
         price: 0,
+        asRegistrar: false,
       });
+      setTpPhone({...tpPhone, phoneNumber:""})
       // console.log(priceTable);
       modal ? setShow(true) : setShow(false);
 
@@ -168,10 +173,12 @@ export const Traveler = forwardRef(
         //   setTravelerForm({ ...travelerForm, country: e });
         //   break;
         case "phoneCode":
-          setTravelerForm({ ...travelerForm, phoneCode: e });
+          setTpPhone({ ...tpPhone, phoneCode: e });
+          setTravelerForm({ ...travelerForm, phone: e + tpPhone.phoneNumber });
           break;
         case "mobile":
-          setTravelerForm({ ...travelerForm, mobile: e });
+          setTpPhone({ ...tpPhone, phoneNumber: e });
+          setTravelerForm({ ...travelerForm, phone: tpPhone.phoneCode + e });
           break;
         case "kidWithBed":
           // if kid with bed use child price else use original price
@@ -275,8 +282,15 @@ export const Traveler = forwardRef(
         lastName: storeForm.form.registrar.lastName,
         email: storeForm.form.registrar.email,
         country: storeForm.form.registrar.country,
-        phoneCode: storeForm.form.registrar.phoneCode,
-        mobile: storeForm.form.registrar.mobile,
+        // phoneCode: storeForm.form.registrar.phoneCode,
+        // mobile: storeForm.form.registrar.mobile,
+        phone:
+          storeForm.form.registrar.phone,
+        asRegistrar: true,
+      });
+      setTpPhone({
+        phoneCode: storeForm.form.registrar.phone.substring(0,4),
+        phoneNumber: storeForm.form.registrar.phone.substring(3,storeForm.form.registrar.phone.length),
       });
     };
 
@@ -546,7 +560,7 @@ export const Traveler = forwardRef(
                       aria-label="phoneNumber"
                       aria-describedby="basic-addon1"
                       onChange={(e) => onChangeInput("mobile", e.target.value)}
-                      value={travelerForm.mobile}
+                      value={tpPhone.phoneNumber}
                     />
                   </div>
                 </div>

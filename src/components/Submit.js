@@ -221,7 +221,7 @@ export const Submit = ({ setLoadingFromChild }) => {
                 />
               </div>
             ))}
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3 px-3">
               <Form.Check
                 required
                 inline

@@ -21,7 +21,8 @@ const initialState = {
     totalDeposit: 0,
     registrar: {
       // country: "Taiwan",
-      phoneCode: "+886",
+      // phoneCode: "+886",
+      phone:"",
       receiptName: "",
       receiptNo: "",
       receiptNote: "",
@@ -122,12 +123,12 @@ export const formSlice = createSlice({
         case "country":
           state.form.registrar = { ...state.form.registrar, country: value };
           break;
-        case "phoneCode":
-          state.form.registrar = { ...state.form.registrar, phoneCode: value };
+        case "phone":
+          state.form.registrar = { ...state.form.registrar, phone: value };
           break;
-        case "mobile":
-          state.form.registrar = { ...state.form.registrar, mobile: value };
-          break;
+        // case "mobile":
+        //   state.form.registrar = { ...state.form.registrar, mobile: value };
+        //   break;
         case "address":
           state.form.registrar = { ...state.form.registrar, address: value };
           break;
@@ -141,7 +142,7 @@ export const formSlice = createSlice({
         state.form.room[index].traveler = [];
       }
       state.form.room[index].traveler.push(traveler);
-      // state.form.traveler.push(action.payload);
+      state.form.room[index].occupancy = state.form.room[index].occupancy + 1;
     },
     clearTraveler: (state, action) => {
       const { index } = action.payload;
@@ -156,6 +157,7 @@ export const formSlice = createSlice({
         state.form.room[index].traveler = [];
       }
       state.form.room[index].roomType = roomType;
+      state.form.room[index].occupancy = 0;
     },
     setTotalPrice: (state, action) => {
       state.form.totalPrice = action.payload;

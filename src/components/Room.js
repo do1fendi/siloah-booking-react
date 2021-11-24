@@ -55,12 +55,11 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
   const roomOccupancy = useSelector((state) => state.form.roomOccupancyTable);
   const registrarIsSet = useSelector((state) => {
     const keys = [
-      "phoneCode",
+      "phone",
       "lastName",
       "firstName",
       "email",
       "address",
-      "mobile",
     ];
     const registrarObj = state.form.form.registrar;
     const hasAllKeys = keys.every((key) => registrarObj.hasOwnProperty(key));

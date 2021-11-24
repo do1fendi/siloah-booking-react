@@ -1,4 +1,9 @@
 @import "bootstrap/dist/css/bootstrap.css";
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200&family=Noto+Serif+TC:wght@200&display=swap");
+
+body {
+  font-family: "Noto Serif TC", serif;
+}
 
 .loader-wrapper {
   position: fixed;
@@ -125,6 +130,9 @@ body {
   .react-datepicker {
     font-size: 1.2rem !important;
   }
+  .table-sm{
+    font-size: 12px;
+  }
 }
 
 /** react-datePicker */
@@ -200,11 +208,11 @@ a {
   width: 170px;
 }
 
-img{
+img {
   width: 100%;
 }
 
-.logo{
+.logo {
   width: 15%;
 }
 @media only screen and (max-width: 768px) {
@@ -212,3 +220,4 @@ img{
     width: 50%;
   }
 }
+

@@ -1,28 +1,46 @@
 import { setRegistrar } from "../store/form";
 import { useDispatch, useSelector } from "react-redux";
 import { country } from "../store/country";
-import {
-  forwardRef,
-  useState,
-  useRef,
-  useImperativeHandle,
-} from "react";
+import { forwardRef, useState, useRef, useImperativeHandle } from "react";
 import { Form } from "react-bootstrap";
 
 const Registrar = forwardRef((props, ref) => {
   const storeForm = useSelector((state) => state.form.form);
   const registrarFormRef = useRef(null);
-  
+
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
 
+  const [tpPhone, setTpPhone] = useState({
+    phoneCode: "+886",
+    phoneNumber: "",
+  });
+
   const onChangeInput = (input, e) => {
-    dispatch(setRegistrar({ input: input, value: e }));
-    if (input === "country") {
-      const tempCountry = country.filter((state) => state.country === e);
-      const phoneCode = tempCountry[0].phoneCode;
-      dispatch(setRegistrar({ input: "phoneCode", value: phoneCode }));
+    if (input === "phoneCode") {
+      setTpPhone({ ...tpPhone, phoneCode: e });
+      dispatch(
+        setRegistrar({
+          input: "phone",
+          value:  e + tpPhone.phoneNumber,
+        })
+      );
+    } else if (input === "mobile") {
+      setTpPhone({ ...tpPhone, phoneNumber: e });
+      dispatch(
+        setRegistrar({
+          input: "phone",
+          value: tpPhone.phoneCode + e,
+        })
+      );
     }
+    else dispatch(setRegistrar({ input: input, value: e }));
+    // if (input === "phoneCode" || input === "mobile") {
+    // if (input === "country") {
+    //   const tempCountry = country.filter((state) => state.country === e);
+    //   const phoneCode = tempCountry[0].phoneCode;
+    //   dispatch(setRegistrar({ input: "phoneCode", value: phoneCode }));
+    // }
   };
   useImperativeHandle(ref, () => ({
     triggerHandleAddRoom() {
@@ -89,7 +107,7 @@ const Registrar = forwardRef((props, ref) => {
             id="validationCustom02"
             onChange={(e) => onChangeInput("email", e.target.value)}
             required
-          />          
+          />
         </div>
         {/* <div className="col-md-6">
           <label htmlFor="validationCustom04" className="form-label">
@@ -126,7 +144,7 @@ const Registrar = forwardRef((props, ref) => {
               aria-describedby="basic-addon1"
               onChange={(e) => onChangeInput("phoneCode", e.target.value)}
               required
-              defaultValue={storeForm.registrar.phoneCode}
+              defaultValue={tpPhone.phoneCode}
               // value={storeForm.registrar.phoneCode}
             />
             <input
