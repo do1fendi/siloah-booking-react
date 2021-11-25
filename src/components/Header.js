@@ -3,8 +3,7 @@ import logo from '../images/logo.png';
 export const Header = () => {
   const { departureDate, availableSeat, tourSubject } = useSelector(
     (state) => state.form
-  );
-  console.log(window.location.origin);
+  );  
   return (
     <div className="w-100">
       <div className="alert alert-primary" role="alert">

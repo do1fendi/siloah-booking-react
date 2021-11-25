@@ -18,14 +18,14 @@ export const Receipt = () => {
                 <Form.Control
                   type="text"
                   placeholder="抬頭"
-                  onChange={(e) => onChangeInput("receiptName", e.target.value)}
+                  onChange={(e) => onChangeInput("invBuyer", e.target.value)}
                 />
               </Form.Group>
               <Form.Group className="mb-2">
-                <Form.Control type="text" placeholder="統一編號"  onChange={(e) => onChangeInput("receiptNo", e.target.value)} />
+                <Form.Control type="text" placeholder="統一編號"  onChange={(e) => onChangeInput("invUid", e.target.value)} />
               </Form.Group>
               <Form.Group className="mb-2">
-                <Form.Control type="text" placeholder="代轉備註"  onChange={(e) => onChangeInput("receiptNote", e.target.value)} />
+                <Form.Control type="text" placeholder="代轉備註"  onChange={(e) => onChangeInput("invRemark", e.target.value)} />
               </Form.Group>
             </Form>
           </Accordion.Body>

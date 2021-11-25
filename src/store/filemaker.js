@@ -54,5 +54,29 @@ export const findRecord = async (gn, token) => {
   return res.data.response;
 };
 
+// Store
+export const store = async (token, data) => {
+  const query = {
+    fieldData: {
+      json_byNumber: JSON.stringify(data),
+    },
+  };
+  const config = {
+    method: "post",
+    url: "https://ofc.taiwanviptravel.com/fmi/data/v1/databases/TVT/layouts/DATA_API_SALESORDER/records",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    data: query,
+  };
+  try {
+    const res = await axios(config);
+    return res.data.response;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const { setToken } = filemakerSlice.actions;
 export default filemakerSlice.reducer;

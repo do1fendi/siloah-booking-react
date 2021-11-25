@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setTotalPrice, setTotalDeposit } from "../store/form";
-import { findRecord, getToken, setToken } from "../store/filemaker";
+import { findRecord, getToken, setToken, store } from "../store/filemaker";
 import { useEffect, useRef, useState } from "react";
 import { Form } from "react-bootstrap";
 
@@ -8,8 +8,10 @@ export const Submit = ({ setLoadingFromChild }) => {
   const [validated, setValidated] = useState(false);
   const formRef = useRef(null);
   const queryParams = new URLSearchParams(window.location.search);
+  const curForm = useSelector((state) => state.form.form);
   const totalPrice = useSelector((state) => state.form.form.totalPrice);
   const totalDeposit = useSelector((state) => state.form.form.totalDeposit);
+  const token = useSelector((state) => state.filemaker.token);
   const dispatch = useDispatch();
   // infant use infant price as the deposit, other use default deposit
   const defaultDeposit = useSelector((state) => state.form.deposit);
@@ -131,7 +133,6 @@ export const Submit = ({ setLoadingFromChild }) => {
         alert("Room is currently not available, please select another room");
       } else {
         triggerHandleSubmit();
-        
       }
     })();
   };
@@ -140,9 +141,18 @@ export const Submit = ({ setLoadingFromChild }) => {
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
-    }
-    else {
-      alert("ok");
+    } else {
+      // store to filemaker
+      (async () => {
+        const result = await store(token, curForm);
+        console.log(result);
+        // if record stored, do payment
+        if (result.recordId) {
+          alert("ok");
+        } else {
+          alert("record failed, please contact Siloah");
+        }
+      })();
     }
 
     setValidated(true);

@@ -17,15 +17,16 @@ const initialState = {
   },
   roomOccupancyTable: [],
   form: {
+    groupNumber: "",
     totalPrice: 0,
     totalDeposit: 0,
+    invBuyer: "",
+    invUid: "",
+    invRemark: "",
     registrar: {
       // country: "Taiwan",
       // phoneCode: "+886",
-      phone:"",
-      receiptName: "",
-      receiptNo: "",
-      receiptNote: "",
+      phone: "",
     },
     room: [{}],
   },
@@ -47,6 +48,7 @@ export const formSlice = createSlice({
         TOURPACKAGE_SALSEPRICE_D_StandardPrice_3_,
       } = action.payload;
       state.groupNumber = groupNumber;
+      state.form.groupNumber = groupNumber;
       state.departureDate = departureDate;
       state.availableSeat = seat_available;
       state.tourSubject = tourSubject;
@@ -168,14 +170,14 @@ export const formSlice = createSlice({
     setReceipt: (state, action) => {
       const { input, value } = action.payload;
       switch (input) {
-        case "receiptName":
-          state.form.registrar.receiptName = value;
+        case "invBuyer":
+          state.form.invBuyer = value;
           break;
-        case "receiptNo":
-          state.form.registrar.receiptNo = value;
+        case "invUid":
+          state.form.invUid = value;
           break;
-        case "receiptNote":
-          state.form.registrar.receiptNote = value;
+        case "invRemark":
+          state.form.invRemark = value;
           break;
 
         default:
