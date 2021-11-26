@@ -6,6 +6,8 @@ import { Form } from "react-bootstrap";
 
 export const Submit = ({ setLoadingFromChild }) => {
   const [validated, setValidated] = useState(false);
+  const [pay, setPay] = useState("deposit");
+  const [payMethod, setPayMethod] = useState("");
   const formRef = useRef(null);
   const queryParams = new URLSearchParams(window.location.search);
   const curForm = useSelector((state) => state.form.form);
@@ -107,7 +109,8 @@ export const Submit = ({ setLoadingFromChild }) => {
       : dispatch(setTotalDeposit(0));
   }, [calculatePrice, dispatch, calculateDeposit, depositList]);
 
-  const onSubmit = (payment) => {
+  const onSubmit = (paymentMethod) => {
+    setPayMethod(paymentMethod);
     setLoadingFromChild(true);
     /**  Get latest data from filemaker, then compare currentData with it */
     (async () => {
@@ -148,7 +151,12 @@ export const Submit = ({ setLoadingFromChild }) => {
         console.log(result);
         // if record stored, do payment
         if (result.recordId) {
-          alert("ok");
+          alert(payMethod);
+          //***** Continue here */
+          // payment by credit card
+          // if(paymentMethod === "credit"){
+          //   window.location.replace(`https://node.taiwanviptravel.com/payment?recordId=${result.recordId}&pay=${pay}`)
+          // }
         } else {
           alert("record failed, please contact Siloah");
         }
@@ -218,6 +226,8 @@ export const Submit = ({ setLoadingFromChild }) => {
                   name="group1"
                   type={type}
                   id={`inline-${type}-1`}
+                  value="full"
+                  onChange={(e) => setPay(e.target.value)}
                 />
                 <Form.Check
                   inline
@@ -228,6 +238,8 @@ export const Submit = ({ setLoadingFromChild }) => {
                   name="group1"
                   type={type}
                   id={`inline-${type}-2`}
+                  value="deposit"
+                  onChange={(e) => setPay(e.target.value)}
                 />
               </div>
             ))}

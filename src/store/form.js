@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+const initialState = {  
   groupNumber: "",
   departureDate: "",
   availableSeat: 0,
@@ -17,6 +17,7 @@ const initialState = {
   },
   roomOccupancyTable: [],
   form: {
+    orderFromType:"WEB",
     groupNumber: "",
     totalPrice: 0,
     totalDeposit: 0,
