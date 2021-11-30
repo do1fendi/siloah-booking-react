@@ -154,9 +154,12 @@ export const Submit = ({ setLoadingFromChild }) => {
           alert(payMethod);
           //***** Continue here */
           // payment by credit card
-          // if(paymentMethod === "credit"){
-          //   window.location.replace(`https://node.taiwanviptravel.com/payment?recordId=${result.recordId}&pay=${pay}`)
-          // }
+          if(payMethod === "credit"){
+            window.location.replace(`https://node.taiwanviptravel.com/payment?recordId=${result.recordId}&pay=${pay}`)
+          }
+          else if (payMethod === "atm"){
+            window.location.replace(`https://node.taiwanviptravel.com/payment?redirect=atm`)
+          }
         } else {
           alert("record failed, please contact Siloah");
         }
