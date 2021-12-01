@@ -158,7 +158,7 @@ export const Submit = ({ setLoadingFromChild }) => {
             window.location.replace(`https://node.taiwanviptravel.com/payment?recordId=${result.recordId}&pay=${pay}`)
           }
           else if (payMethod === "atm"){
-            window.location.replace(`https://node.taiwanviptravel.com/payment?redirect=atm&recordId=${result.recordId}&pay=${pay}`)
+            window.location.replace(`https://node.taiwanviptravel.com/payment/atm?recordId=${result.recordId}&pay=${pay}`)
           }
         } else {
           alert("record failed, please contact Siloah");
