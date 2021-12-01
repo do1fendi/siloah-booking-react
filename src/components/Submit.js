@@ -140,6 +140,7 @@ export const Submit = ({ setLoadingFromChild }) => {
     })();
   };
   const handleSubmit = (event) => {
+    setLoadingFromChild(true);
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -149,9 +150,9 @@ export const Submit = ({ setLoadingFromChild }) => {
       (async () => {
         const result = await store(token, curForm);
         console.log(result);
+        setLoadingFromChild(false);
         // if record stored, do payment
         if (result.recordId) {
-          alert(payMethod);
           //***** Continue here */
           // payment by credit card
           if(payMethod === "credit"){
