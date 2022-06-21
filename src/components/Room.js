@@ -157,7 +157,7 @@ export const Room = ({ indexNo, checkRegistrarForm }) => {
   };
 
   return (
-    <div className="p-2 mb-2 shadow-sm mt-4 mb-3 roomBox">
+    <div className="p-2 mb-2 shadow-sm mt-4 mb-3 roomBox" id="selectRoom">
       <Badge bg="warning" text="dark" className="mb-2">
         Room {indexNo + 1}
       </Badge>

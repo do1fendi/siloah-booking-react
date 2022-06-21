@@ -128,10 +128,12 @@ export const Submit = ({ setLoadingFromChild }) => {
       );
       // to be continue, if err true alert error, if err false submit form to filemaker
       setLoadingFromChild(false);
-      console.log(compareData(getCurrentData.priceTable_group));
+      // console.log(compareData(getCurrentData.priceTable_group));
       //check if traveler is set using totalPrice is more than 0
       if (totalPrice === 0) {
         alert("No Traveler is set");
+        var element = document.getElementById("selectRoom");
+        element.scrollIntoView();
       } else if (compareData(getCurrentData.priceTable_group)) {
         alert("Room is currently not available, please select another room");
       } else {
@@ -145,21 +147,25 @@ export const Submit = ({ setLoadingFromChild }) => {
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
+      setLoadingFromChild(false);
     } else {
       // store to filemaker
       (async () => {
         const result = await store(token, curForm);
-        console.log(result);
+        // console.log(result);
         setLoadingFromChild(false);
         // if record stored, do payment
         if (result.recordId) {
           //***** Continue here */
           // payment by credit card
-          if(payMethod === "credit"){
-            window.location.replace(`https://node.taiwanviptravel.com/payment?recordId=${result.recordId}&pay=${pay}`)
-          }
-          else if (payMethod === "atm"){
-            window.location.replace(`https://node.taiwanviptravel.com/payment/atm?recordId=${result.recordId}&pay=${pay}`)
+          if (payMethod === "credit") {
+            window.location.replace(
+              `https://node.taiwanviptravel.com/payment?recordId=${result.recordId}&pay=${pay}`
+            );
+          } else if (payMethod === "atm") {
+            window.location.replace(
+              `https://node.taiwanviptravel.com/payment/atm?recordId=${result.recordId}&pay=${pay}`
+            );
           }
         } else {
           alert("record failed, please contact Siloah");
