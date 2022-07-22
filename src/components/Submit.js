@@ -160,11 +160,11 @@ export const Submit = ({ setLoadingFromChild }) => {
           // payment by credit card
           if (payMethod === "credit") {
             window.location.replace(
-              `https://node.taiwanviptravel.com/payment?recordId=${result.recordId}&pay=${pay}`
+              `https://node.taiwanviptravel.com/payment?source=TVT&recordId=${result.recordId}&pay=${pay}`
             );
           } else if (payMethod === "atm") {
             window.location.replace(
-              `https://node.taiwanviptravel.com/payment/atm?recordId=${result.recordId}&pay=${pay}`
+              `https://node.taiwanviptravel.com/payment/atm?source=TVT&recordId=${result.recordId}&pay=${pay}`
             );
           }
         } else {
